@@ -1,22 +1,28 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-      <LoginComponent/>
+    <BadgeComponent :students="students" />
   </q-page>
 </template>
 
 <script>
-import LoginComponent from 'src/components/LoginComponent.vue';
-import { defineComponent } from 'vue'
+import BadgeComponent from 'src/components/BadgeComponent.vue';
+import { defineComponent,ref } from 'vue'
 
 export default defineComponent({
   name: 'IndexPage',
   components:{
-    LoginComponent
+    BadgeComponent
+  },
+  setup(){
+    const students = ref([
+      {name:'Alam',lastName:'Brito',ci:'28086003',descripcion:['informatica','Permiso local','aprobada'],},
+      {name:'Elsa',lastName:'Muro',ci:'12652417',descripcion:['informatica','Permiso local','negado'],},
+      {name:'Carmelo',lastName:'Lames',ci:'25465123',descripcion:['informatica','Permiso local','aprobada'],}
+    ])
+
+    return{
+      students
+    }
   }
 })
 </script>
