@@ -14,10 +14,12 @@
 
       <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin:5px">
           <q-checkbox  label="Recuerdame" v-model="remem" />
-          <p style="justify-content: center" sty to="indexPage2">¿Olvidaste tu contraseña?</p>
+          <p style="justify-content: center" sty to="indexPage2">¿Haz olvidado tu <br/> contraseña?</p>
       </div>
-      <q-btn label="Ingresar" color="grey" @click="ingresar" to="/"/>
-      <p>No tienes cuenta?</p>
+      <q-btn label="Ingresar" color="grey-9" @click="ingresar" to="/"/>
+      <div class="flex flex-center q-gutter-md">
+        <p>¿No tienes cuenta?</p><p>Registrate</p>
+      </div>
   </q-fomr>
 </template>
 

@@ -7,13 +7,12 @@
         v-for="(student,index) in students" :key="index"
         class="q-pa-md"
         :label="student.name +' '+ student.lastName"
-        icon="perm_identity"
         style="min-width: 400px;"
       >
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmpxf663mzVTlDMnWiwzlahR6kSJ4Q-2noEvewvxu-TRfP0VCEyrI3j7qNtiT_ybBa&usqp=CAU">
+              <q-img :src="student.image"/>
             </q-avatar>
           </q-item-section>
 
@@ -25,17 +24,19 @@
           </q-item-section>
 
           <q-item-section side>
-            <div class="row items-center">
-              <q-icon name="star" color="green" size="24px" />
-              <q-icon name="star" color="green" size="24px" />
-              <q-icon name="star" color="red" size="24px" />
-            </div>
+            <q-avatar v-show="student.state != false " class="row items-center">
+              <img src="public\icons\5aa78e387603fc558cffbf1d.png" alt="correcto/incorrecto">
+            </q-avatar>
+            <q-avatar v-show="student.state == false" class="row items-center">
+              <img src="public\icons\images.jpg" alt="correcto/incorrecto">
+            </q-avatar>
           </q-item-section>
         </template>
 
         <q-card class="bg-grey-9">
           <q-card-section>
             <q-ol>
+            <p>Descripcion</p>
               <li v-for="(descripcion,index) in student.descripcion" :key="index"> {{ student.descripcion[index]}}</li>
             </q-ol>
           </q-card-section>
@@ -54,7 +55,15 @@ props:{
     type: Array
   }
 },
+setup(){
+
+  return{
+  }
+}
 })
 </script>
 <style>
+.q-icon{
+  display: none;
+}
 </style>

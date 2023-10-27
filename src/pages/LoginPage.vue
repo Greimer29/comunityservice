@@ -1,4 +1,4 @@
-<template>
+<template class="bg-aja">
   <q-page class="flex flex-center q-gutter-md">
     <LoginComponent/>
   </q-page>
