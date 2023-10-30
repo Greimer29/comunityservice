@@ -51,17 +51,23 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
+    title: 'Login',
+    caption: 'Login page',
+    icon: 'login',
     link: 'loginpage'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: '/'
+    title: 'Guardia',
+    caption: 'Guardia views',
+    icon: 'military',
+    link: 'military'
   },
+  {
+    title: 'Guardia',
+    caption: 'Guardia views',
+    icon: 'military',
+    link: 'students'
+  }
 ]
 
   export default defineComponent({
