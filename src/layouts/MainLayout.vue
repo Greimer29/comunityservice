@@ -51,19 +51,13 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Login',
-    caption: 'Login page',
-    icon: 'login',
-    link: 'loginpage'
-  },
-  {
     title: 'Guardia',
     caption: 'Guardia views',
     icon: 'military',
     link: 'military'
   },
   {
-    title: 'Guardia',
+    title: 'Students',
     caption: 'Guardia views',
     icon: 'military',
     link: 'students'

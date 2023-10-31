@@ -1,5 +1,5 @@
 <template>
-  <q-fomr class="q-gutter-md" style="padding:15px; text-align:center; color:white ; min-width:400px; min-height:630px; ">
+  <form class="q-gutter-md" style="padding:15px; text-align:center; color:white ; min-width:400px; min-height:630px; ">
       <div>
           <img
               alt="Quasar logo"
@@ -9,45 +9,55 @@
       </div>
       <div class="q-gutter-md" style=" margin:30px; padding:0px; max-width:300px; text-align:center">
           <q-input v-model="user" filled label="Usuario"/>
-          <q-input v-model="pass" filled label="Contrase;a" type="password"/>
+          <q-input v-model="pass" filled label="Contraseña" type="password"/>
       </div>
 
       <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin:5px">
           <q-checkbox  label="Recuerdame" v-model="remem" />
           <p style="justify-content: center" sty to="indexPage2">¿Haz olvidado tu <br/> contraseña?</p>
       </div>
-      <q-btn label="Ingresar" color="grey-9" @click="ingresar" to="/"/>
+      <q-btn style="min-width: 50%;" label="Ingresar" color="grey-9" @click="verificar" to="/main"/>
       <div class="flex flex-center q-gutter-md">
         <p>¿No tienes cuenta?</p><p>Registrate</p>
       </div>
-  </q-fomr>
+  </form>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue'
+import { useQuasar} from 'quasar'
 
 export default defineComponent({
 name: 'LoginComponent',
 setup(){
-    const user = ref('')
-    const pass = ref('')
+  const $q = useQuasar()
+  const user = ref('')
+  const pass = ref('')
 
-    const ingresar = () => {
-        alert(`hola ${user.value}`)
+  const verificar = () => {
+    if((user.value.trim())&&(pass.value.trim())){
+      console.log('Listo ocmando ya le checo')
+    }else{
+      $q.notify({
+          position:'top',
+          type: 'warning',
+          message: 'Mi viejo esos campos estan como vacios'
+        })
     }
+  }
 
-    return{
-        remem : ref(false),
-        user,
-        pass,
-        ingresar
-    }
+  return{
+    remem : ref(false),
+    user,
+    pass,
+    verificar
+  }
 }
 })
 </script>
 <style>
-q-fomr{
-  background-image: linear-gradient(rgba(95, 3, 3, 0.952),rgba(5, 5, 46, 0.815));
+form{
+  background-image: linear-gradient(rgba(107, 3, 3, 0.952),rgba(5, 5, 46, 0.815));
   border-radius: 60px;
 }
 p{

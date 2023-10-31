@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-center ">
         <history-component/>
     </div>
 </template>
@@ -13,6 +13,6 @@ export default defineComponent({
     components:{
         HistoryComponent
     }
-    
+
 })
 </script>

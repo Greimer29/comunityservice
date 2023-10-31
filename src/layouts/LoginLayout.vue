@@ -1,19 +1,24 @@
-<template class="bg-aja">
-  <q-page class="flex flex-center q-gutter-md">
+<template>
+  <div class="flex flex-center q-gutter-md q-mt-xl">
     <LoginComponent/>
-  </q-page>
+  </div>
 </template>
 
 <script>
 import LoginComponent from 'src/components/LoginComponent.vue';
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'loginPage',
+  name:'LoginLayout',
   components:{
     LoginComponent
+  },
+  setup(){
+    return{
+    }
   }
 })
 </script>
+
 <style>
 </style>
