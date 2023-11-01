@@ -14,9 +14,9 @@
 
       <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin:5px">
           <q-checkbox  label="Recuerdame" v-model="remem" />
-          <p style="justify-content: center" sty to="indexPage2">¿Haz olvidado tu <br/> contraseña?</p>
+          <p style="justify-content: center" to="indexPage2">¿Haz olvidado tu <br/> contraseña?</p>
       </div>
-      <q-btn style="min-width: 50%;" label="Ingresar" color="grey-9" @click="verificar" to="/main"/>
+      <q-btn style="width: 50%;" label="Ingresar" color="grey-9" @click="verificar(users)"/>
       <div class="flex flex-center q-gutter-md">
         <p>¿No tienes cuenta?</p><p>Registrate</p>
       </div>
@@ -26,17 +26,37 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useQuasar} from 'quasar'
+import {useRouter} from 'vue-router'
+
 
 export default defineComponent({
 name: 'LoginComponent',
+props:{
+  users:{
+    type: Array,
+    required:true
+  }
+},
 setup(){
   const $q = useQuasar()
+  const router = useRouter()
   const user = ref('')
   const pass = ref('')
 
-  const verificar = () => {
+  const verificar = (users) => {
     if((user.value.trim())&&(pass.value.trim())){
-      console.log('Listo ocmando ya le checo')
+      console.log(users)
+      const found = users.find(val => val.user === user.value && val.password === pass.value)
+
+      if(found){
+        router.push('/main')
+      }else{
+        $q.notify({
+          position:'top',
+          type: 'negative',
+          message: 'Sus credenciales son incorrectos'
+        })
+      }
     }else{
       $q.notify({
           position:'top',

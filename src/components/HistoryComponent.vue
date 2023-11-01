@@ -1,21 +1,26 @@
 <template>
   <div
-    class="q-mt-md q-gutter-md flex felx-center full-width"
+    class="q-ma-xs flex felx-center full-width"
     v-for="(permiso,index) in permiso" :key="index"
+    style="background-color: red; text-color: blue"
   >
-    <div>
-      <q-avatar v-show="permiso.status === 'aprobada'" class="row items-center">
+    <div class="flex flex-center q-ma-none q-pa-md">
+      <q-avatar v-show="permiso.status === 'aprobada'">
         <img src="public\icons\5aa78e387603fc558cffbf1d.png" alt="correcto/incorrecto">
       </q-avatar>
-      <q-avatar v-show="permiso.status === 'denegada'" class="row items-center">
+      <q-avatar v-show="permiso.status === 'denegada'">
         <img src="public\icons\images.jpg" alt="correcto/incorrecto">
       </q-avatar>
     </div>
-    <div>
-      hola
+    <div class="q-ma-none q-pa-md">
+      <p>{{permiso.hsalida}}</p>
+      <p>{{permiso.hllegada}}</p>
+      <p>{{permiso.fecha}}</p>
     </div>
-    <div>
-      que tal
+    <div class="q-ma-none q-pa-md col self-end">
+      <p>{{permiso.hsalida}}</p>
+      <p>{{permiso.hllegada}}</p>
+      <p>{{permiso.fecha}}</p>
     </div>
   </div>
 </template>
