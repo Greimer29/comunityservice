@@ -1,23 +1,36 @@
 <template>
-  <div class="q-pa-md q-gutter-md">
-    <q-banner inline-actions rounded class="">
-      <template v-slot="header">
-        <div>
-          <q-image src="public\descarga.jpg" style="height: 140px; max-width: 150px"/>
-        </div>
-      </template>
-      <template v-slot:action>
-        <q-btn flat label="Turn ON Wifi" />
-        <q-btn flat label="Dismiss" />
-      </template>
-    </q-banner>
+  <div
+    class="q-mt-md q-gutter-md flex felx-center full-width"
+    v-for="(permiso,index) in permiso" :key="index"
+  >
+    <div>
+      <q-avatar v-show="permiso.status === 'aprobada'" class="row items-center">
+        <img src="public\icons\5aa78e387603fc558cffbf1d.png" alt="correcto/incorrecto">
+      </q-avatar>
+      <q-avatar v-show="permiso.status === 'denegada'" class="row items-center">
+        <img src="public\icons\images.jpg" alt="correcto/incorrecto">
+      </q-avatar>
+    </div>
+    <div>
+      hola
+    </div>
+    <div>
+      que tal
+    </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
+  name: 'HistoryComponent',
+  props:{
+    permiso:{
+      type: Array,
+      required: true
+    }
+  }
 
 })
 </script>
