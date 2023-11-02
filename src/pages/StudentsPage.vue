@@ -1,9 +1,17 @@
 <template>
-    <div class="q-pa-md text-center" style="margin: auto; width: 100%;">
-        merito
-        demerito
-        fecha
-        <history-component :permiso="permisos" style="background-color: red;"/>
+  <div class="q-pa-xl text-center bg-blue">
+    <div>
+      merito
+      demerito
+      Tmerito
+    </div>
+  </div>
+    <div
+      class="q-pa-md text-center bg-grey-4"
+      style="margin: auto; width: 98%;"
+      rounded
+    >
+      <history-component :permiso="permisos"/>
     </div>
 </template>
 
@@ -23,19 +31,19 @@ export default defineComponent({
           hsalida:'10:20am',
           hllegada:'12:20pm',
           fecha:'1/11/2023',
-          status:'denegada',
+          status:true,
         },
         {
           hsalida:'12:20pm',
           hllegada:'12:20pm',
           fecha:'1/11/2023',
-          status:'denegada',
+          status:true,
         },
         {
           hsalida:'12:20pm',
           hllegada:'12:20pm',
           fecha:'1/11/2023',
-          status:'denegada',
+          status:false,
         }
       ])
 
