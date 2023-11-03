@@ -1,5 +1,5 @@
 <template>
-  <form class="q-gutter-md" style="padding:15px; text-align:center; color:white ; min-width:400px; min-height:630px; ">
+  <form class="q-gutter-md" style="padding:15px; text-align:center; color:white ; width:90%; height:80%; ">
       <div>
           <img
               alt="Quasar logo"
@@ -27,6 +27,7 @@
 import { defineComponent, ref } from 'vue'
 import { useQuasar} from 'quasar'
 import {useRouter} from 'vue-router'
+import axios from 'axios'
 
 
 export default defineComponent({
@@ -43,11 +44,17 @@ setup(){
   const user = ref('')
   const pass = ref('')
 
+  const getUsers = ()=>{
+          axios.get("http://localhost:3333/").then(res => {
+            console.log(res)
+          })
+        }
+
   const verificar = (users) => {
     if((user.value.trim())&&(pass.value.trim())){
-      console.log(users)
       const found = users.find(val => val.user === user.value && val.password === pass.value)
 
+      getUsers()
       if(found){
         router.push('/main')
       }else{
