@@ -11,7 +11,7 @@
     >
       <history-component :permiso="permisos"/>
       <div class="q-pt-md">
-        <q-btn label="Solicitar Permiso" color="positive" to="/permise"/>
+        <q-btn label="Solicitar Permiso" color="positive" to="/students/permise"/>
 
       </div>
     </div>
