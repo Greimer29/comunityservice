@@ -4,21 +4,14 @@ const routes = [
     path: '/',
     component: () => import('layouts/LoginLayout.vue'),
   },
+  {path: '/register', component: () => import('pages/RegisterPage.vue') },
   {
     path: '/main',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/military', component: () => import('pages/IndexPage.vue') },
-      {
-        path: '/students',
-        component: () => import('pages/StudentsPage.vue'),
-        children:[
-        ]
-      },
-      {
-        path: '/permise',
-        component: () => import('pages/PermisePage.vue')
-      }
+      {path: '/students', component: () => import('pages/StudentsPage.vue')},
+      {path: '/students/permise', component: () => import('pages/PermisePage.vue')}
     ]
   },
 
