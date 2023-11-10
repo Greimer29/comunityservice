@@ -18,7 +18,7 @@
           >
       </div>
       <div class="q-gutter-md" style=" margin:30px; padding:0px; max-width:300px; text-align:center">
-          <q-input v-model="user" filled label="Usuario"/>
+          <q-input v-model="email" filled label="Usuario"/>
           <q-input v-model="pass" filled label="Contraseña" type="password"/>
       </div>
 
@@ -38,8 +38,7 @@
 import { defineComponent, ref } from 'vue'
 import { useQuasar} from 'quasar'
 import {useRouter} from 'vue-router'
-import axios from 'axios'
-
+import {api} from 'boot/axios'
 
 export default defineComponent({
 name: 'LoginComponent',
@@ -48,12 +47,21 @@ components:{
 setup(){
   const $q = useQuasar()
   const router = useRouter()
-  const user = ref('')
+  const email = ref('')
   const pass = ref('')
 
   const verificar = () => {
-    if((user.value.trim())&&(pass.value.trim())){
-      router.replace('/main')
+    if((email.value.trim())&&(pass.value.trim())){
+      api.post('users/register/login',{email,pass})
+        .then((res)=>{
+          $q.notify({
+              position:'top',
+              color:'positive',
+              message: 'Bienvenido'
+            })
+            console.log(res)
+            router.replace('/main')
+        })
     }else{
       $q.notify({
           position:'top',
@@ -65,7 +73,7 @@ setup(){
 
   return{
     remem : ref(false),
-    user,
+    email,
     pass,
     verificar
   }
