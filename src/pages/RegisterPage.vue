@@ -19,14 +19,16 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, popScopeId, ref } from 'vue';
 import {api} from 'boot/axios'
+import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name:'RegisterPage',
   setup(){
   const router = useRouter()
+  const $q = useQuasar()
 
     const user = ref({
       names:'',
@@ -62,10 +64,19 @@ export default defineComponent({
       })
         .then((res) => {
           console.log(res)
+          $q.notify({
+            message: 'Usuario creado exitosamente',
+            color:'positive'
+          })
+          router.replace('/')
         })
-        .catch((err)=>[
+        .catch((err)=>{
           console.log(err)
-        ])
+          $q.notify({
+            message: 'Lo sentimos ocurrio un problema',
+            color:'negative'
+          })
+        })
     }
 
     return{
