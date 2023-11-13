@@ -51,14 +51,10 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import TimeComponent from 'components/TimeComponent.vue'
 import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name:'PermisePage',
-  components:{
-    TimeComponent
-  },
   setup () {
     const $q = useQuasar()
     const permission = ref({
