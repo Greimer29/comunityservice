@@ -80,7 +80,6 @@ export default defineComponent({
           permission.value.motive.trim()
           ){
             console.log('chamo esa broma esta buena')
-            redy=true
           }else{
             $q.notify({
               position:'bottom',
