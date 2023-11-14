@@ -52,6 +52,7 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { api } from 'src/boot/axios'
 
 export default defineComponent({
   name:'PermisePage',
@@ -68,14 +69,25 @@ export default defineComponent({
     })
     const Solicitar = () => {
       if(permission.value.type == 'local'){
-        if(
-          permission.value.dateS.trim() &&
-          permission.value.timeS.trim() &&
-          permission.value.timeL.trim() &&
-          permission.value.place.trim() &&
-          permission.value.motive.trim()
-          ){
-            console.log('chamo esa broma esta buena')
+        if(permission.value.dateS.trim() && permission.value.timeS.trim() && permission.value.timeL.trim() && permission.value.place.trim() && permission.value.motive.trim()){
+            const {dateL,dateS,timeL,timeS,motive,place,type} = permission.value
+            api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type})
+              .then(res => {
+                $q.notify({
+                  position:'top',
+                  type: 'warning',
+                  message: 'Solicitud de permiso enviado con exito'
+                })
+                console.log(res)
+              })
+              .catch(err => {
+                $q.notify({
+                  position:'bottom',
+                  type: 'negative',
+                  message: 'Ha ocurrido un error'
+                })
+                console.log(err)
+              })
           }else{
             $q.notify({
               position:'bottom',
@@ -84,15 +96,25 @@ export default defineComponent({
             })
           }
       }else if(permission.value.type == 'finDe'){
-        if(
-          permission.value.dateS.trim() &&
-          permission.value.dateL.trim() &&
-          permission.value.timeS.trim() &&
-          permission.value.timeL.trim() &&
-          permission.value.place.trim() &&
-          permission.value.motive.trim()
-          ){
-            console.log('chamo esa broma esta buena')
+        if(permission.value.dateS.trim() && permission.value.dateL.trim() && permission.value.timeS.trim() && permission.value.timeL.trim() && permission.value.place.trim() && permission.value.motive.trim()){
+            const {dateL,dateS,timeL,timeS,motive,place,type} = permission.value
+            api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type})
+              .then(res => {
+                $q.notify({
+                  position:'top',
+                  type: 'warning',
+                  message: 'Solicitud de permiso enviado con exito'
+                })
+                console.log(res)
+              })
+              .catch(err => {
+                $q.notify({
+                  position:'bottom',
+                  type: 'negative',
+                  message: 'Ha ocurrido un error'
+                })
+                console.log(err)
+              })
           }else{
             $q.notify({
               position:'bottom',
