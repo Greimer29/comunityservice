@@ -11,7 +11,9 @@ const routes = [
     children: [
       { path: '/military', component: () => import('pages/IndexPage.vue') },
       {path: '/students', component: () => import('pages/StudentsPage.vue')},
-      {path: '/students/permise', component: () => import('pages/PermisePage.vue')}
+      {path: '/students/permise', component: () => import('pages/PermisePage.vue')},
+      {path: '/monitor', component: () => import('pages/MonitorPage.vue')}
+
     ]
   },
 

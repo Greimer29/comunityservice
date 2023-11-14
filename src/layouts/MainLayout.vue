@@ -61,6 +61,12 @@ const linksList = [
     caption: 'Guardia views',
     icon: 'military',
     link: 'students'
+  },
+  {
+    title: 'Monitor',
+    caption: 'Preceptor views',
+    icon: 'monitor',
+    link: 'monitor'
   }
 ]
 

@@ -52,7 +52,6 @@ setup(){
 
   const verificar = () => {
     if((username.value.trim())&&(pass.value.trim())){
-      try {
       api.post('users/register/login',{username:username.value,password:pass.value})
         .then((res)=>{
           $q.notify({
@@ -61,6 +60,7 @@ setup(){
               message: 'Bienvenido'
             })
             router.replace('main')
+            console.log(res)
         })
         .catch((err)=>{
           $q.notify({
@@ -68,9 +68,8 @@ setup(){
               type: 'negative',
               message: 'usuario no encontrado'
             })
+            console.log(err)
         })
-      } catch (error) {
-      }
     }else{
       $q.notify({
           position:'top',
