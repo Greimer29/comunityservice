@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, popScopeId, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import {api} from 'boot/axios'
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
@@ -47,36 +47,64 @@ export default defineComponent({
     })
 
     const registrar = (user) => {
-      api.post('users/register',{
-        names:user.names,
-        lastNames:user.lastNames,
-        age:user.age,
-        ci:user.ci,
-        carrer:user.carrer,
-        semester:user.semestre,
-        phone:user.phone,
-        nroRoom:user.nroRoom,
-        codKey:user.codKey,
-        username:user.username,
-        password:user.password,
-        email:user.email,
-        type:2
-      })
-        .then((res) => {
-          console.log(res)
-          $q.notify({
-            message: 'Usuario creado exitosamente',
-            color:'positive'
-          })
-          router.replace('/')
+      if (
+        user.names.trim() &&
+        user.lastNames.trim() &&
+        user.age.trim() &&
+        user.ci.trim() &&
+        user.carrer.trim() &&
+        user.semestre.trim() &&
+        user.phone.trim() &&
+        user.nroRoom.trim() &&
+        user.codKey.trim() &&
+        user.username.trim() &&
+        user.password.trim() &&
+        user.email.trim() &&
+        user.repitPass.trim()
+        ){
+          if (user.password != user.repitPass) {
+            $q.notify({
+              message: `campo ${repitPass} no coincide con la contrasena`,
+              color:'negative'
+            })
+          }else{
+            api.post('users/register',{
+              names:user.names,
+              lastNames:user.lastNames,
+              age:user.age,
+              ci:user.ci,
+              carrer:user.carrer,
+              semester:user.semestre,
+              phone:user.phone,
+              nroRoom:user.nroRoom,
+              codKey:user.codKey,
+              username:user.username,
+              password:user.password,
+              email:user.email,
+              type:2
+            })
+              .then((res) => {
+                console.log(res)
+                $q.notify({
+                  message: 'Usuario creado exitosamente',
+                  color:'positive'
+                })
+                router.replace('/')
+              })
+              .catch((err)=>{
+                console.log(err)
+                $q.notify({
+                  message: 'Lo sentimos ocurrio un problema con el servidor',
+                  color:'negative'
+                })
+              })
+          }
+       }else{
+        $q.notify({
+          message: 'Hay campos vacios que son requeridos',
+          color:'warning'
         })
-        .catch((err)=>{
-          console.log(err)
-          $q.notify({
-            message: 'Lo sentimos ocurrio un problema',
-            color:'negative'
-          })
-        })
+       }
     }
 
     return{
