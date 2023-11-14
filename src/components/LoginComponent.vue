@@ -18,7 +18,7 @@
           >
       </div>
       <div class="q-gutter-md" style=" margin:30px; padding:0px; max-width:300px; text-align:center">
-          <q-input v-model="email" filled label="Usuario"/>
+          <q-input v-model="username" filled label="Email"/>
           <q-input v-model="pass" filled label="Contraseña" type="password"/>
       </div>
 
@@ -47,21 +47,30 @@ components:{
 setup(){
   const $q = useQuasar()
   const router = useRouter()
-  const email = ref('')
+  const username = ref('')
   const pass = ref('')
 
   const verificar = () => {
-    if((email.value.trim())&&(pass.value.trim())){
-      api.post('users/register/login',{email,pass})
+    if((username.value.trim())&&(pass.value.trim())){
+      try {
+      api.post('users/register/login',{username:username.value,password:pass.value})
         .then((res)=>{
           $q.notify({
               position:'top',
               color:'positive',
               message: 'Bienvenido'
             })
-            console.log(res)
-            router.replace('/main')
+            router.replace('main')
         })
+        .catch((err)=>{
+          $q.notify({
+              position:'bottom',
+              type: 'negative',
+              message: 'usuario no encontrado'
+            })
+        })
+      } catch (error) {
+      }
     }else{
       $q.notify({
           position:'top',
@@ -73,7 +82,7 @@ setup(){
 
   return{
     remem : ref(false),
-    email,
+    username,
     pass,
     verificar
   }
