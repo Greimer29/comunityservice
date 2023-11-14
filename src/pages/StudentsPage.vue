@@ -1,9 +1,6 @@
 <template>
   <div class="q-pa-xl text-center bg-blue">
-      merito
-      demerito
-      Tmerito
-    </div>
+  </div>
     <div
       class="q-pa-md text-center bg-grey-4"
       style="margin: auto; width: 98%;"
@@ -12,14 +9,15 @@
       <history-component :permiso="permisos"/>
       <div class="q-pt-md">
         <q-btn label="Solicitar Permiso" color="positive" to="/students/permise"/>
-
       </div>
+      {{ user }}
     </div>
 </template>
 
 <script>
 import HistoryComponent from 'components/HistoryComponent.vue';
-import { defineComponent, ref } from "vue";
+import { api } from 'src/boot/axios';
+import { defineComponent, ref, onMounted } from "vue";
 import {useRouter} from 'vue-router'
 
 export default defineComponent({
@@ -28,7 +26,30 @@ export default defineComponent({
         HistoryComponent
     },
     setup(){
-      const date = Date()
+      const user = ref('')
+      const getUsers = () => {
+        api.get('users/')
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+      const getHistorial = () => {
+        api.get('users/permises')
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+
+      onMounted(()=>{
+        getHistorial()
+      })
+
       const router = useRouter()
 
       const permisos = ref([
@@ -54,7 +75,7 @@ export default defineComponent({
 
       return{
         permisos,
-        date
+        user
       }
     }
 })
