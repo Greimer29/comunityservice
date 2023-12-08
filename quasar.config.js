@@ -10,7 +10,7 @@
 
 
 const { configure } = require('quasar/wrappers');
-
+const path = require('path')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -51,6 +51,18 @@ module.exports = configure(function (/* ctx */) {
       target: {
         browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],
         node: 'node16'
+      },
+
+      afterBuild(ctx) {
+        const { execSync } = require('child_process');
+        //before biuld check pakage json version
+
+        // Rutas relativas al directorio actual
+        const keystorePath = path.resolve(__dirname, 'my-release-key.keystore');
+        const apkPath = path.resolve(__dirname, 'HomePlus.apk');
+
+        // Utilizar comillas para manejar espacios o caracteres especiales
+        execSync(`jarsigner -keystore "${keystorePath}" -storepass "28086003" -keypass "28086003" "${apkPath}" alias_name`);
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
@@ -99,7 +111,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify','LocalStorage']
     },
 
     // animations: 'all', // --- includes all animations

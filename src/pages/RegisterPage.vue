@@ -1,8 +1,13 @@
 <template>
-  <div class="flex flex-center q-mt-xl">
+  <div class="flex flex-center q-mt-md">
+    <q-toolbar class="q-ma-none">
+      <q-toolbar-title class="flex flex-center q-mt-none">
+        Complete el formulario de registro
+      </q-toolbar-title>
+    </q-toolbar>
     <form  class="q-gutter-md q-mb-md text-center" style="width: 80%;" >
-      <q-input filled  v-model="user.names" label="Nombres" />
-      <q-input filled v-model="user.lastNames" label="Apellidos" />
+      <q-input filled  v-model="user.name" label="Nombre" />
+      <q-input filled v-model="user.lastName" label="Apellido" />
       <q-input filled v-model="user.age" label="Edad" />
       <q-input filled v-model="user.ci" label="Cedula" />
       <q-input filled v-model="user.carrer" label="Carrera" />
@@ -12,7 +17,7 @@
       <q-input filled v-model="user.codKey" label="Codigo de Llave" />
       <q-input filled v-model="user.username" label="Nombre de Usuario" />
       <q-input filled v-model="user.password" label="contraseña" />
-      <q-input filled v-model="user.repitPass" label="repetir contraseña" />
+      <q-input filled v-model="repitPass" label="repetir contraseña" />
       <q-input filled v-model="user.email" label="correo electronico" />
       <q-btn  label="REGISTRAR" color="positive" @click="registrar(user)"/>
     </form>
@@ -29,10 +34,12 @@ export default defineComponent({
   setup(){
   const router = useRouter()
   const $q = useQuasar()
+  const repitPass = ref('')
+  const typeMen = ref('')
 
     const user = ref({
-      names:'',
-      lastNames:'',
+      name:'',
+      lastName:'',
       age:'',
       ci:'',
       carrer:'',
@@ -40,16 +47,16 @@ export default defineComponent({
       semestre:'',
       phone:'',
       password:'',
-      repitPass:'',
       email:'',
       codKey:'',
-      nroRoom:''
+      nroRoom:'',
+      type:''
     })
 
     const registrar = (user) => {
       if (
-        user.names.trim() &&
-        user.lastNames.trim() &&
+        user.name.trim() &&
+        user.lastName.trim() &&
         user.age.trim() &&
         user.ci.trim() &&
         user.carrer.trim() &&
@@ -60,17 +67,30 @@ export default defineComponent({
         user.username.trim() &&
         user.password.trim() &&
         user.email.trim() &&
-        user.repitPass.trim()
+        repitPass.value.trim()
         ){
-          if (user.password != user.repitPass) {
+          if (user.password != repitPass.value) {
             $q.notify({
               message: `campo ${repitPass} no coincide con la contrasena`,
               color:'negative'
             })
           }else{
+            switch (user.password) {
+              case 'MonitorAdmin123':
+                typeMen.value = 1
+                break;
+              case 'PortadaAdmin123':
+              typeMen.value = 3
+                break;
+              case 'AdminAdmin':
+              typeMen.value = 4
+                break;
+              default: typeMen.value = 2
+                break;
+            }
             api.post('users/register',{
-              names:user.names,
-              lastNames:user.lastNames,
+              name:user.name,
+              lastName:user.lastName,
               age:user.age,
               ci:user.ci,
               carrer:user.carrer,
@@ -81,11 +101,11 @@ export default defineComponent({
               username:user.username,
               password:user.password,
               email:user.email,
-              type:2
+              type:typeMen.value
             })
               .then((res) => {
-                console.log(res)
                 $q.notify({
+                  position:'top',
                   message: 'Usuario creado exitosamente',
                   color:'positive'
                 })
@@ -109,7 +129,8 @@ export default defineComponent({
 
     return{
       user,
-      registrar
+      registrar,
+      repitPass
     }
   }
 })

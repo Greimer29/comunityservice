@@ -1,30 +1,24 @@
 <template>
-  <div class="flex flex-center q-gutter-md q-mt-xl">
-    <LoginComponent :users="users"/>
-  </div>
+    <div class="flex flex-center q-mt-xl " >
+      <LoginComponent class="q-pa-none q-ma-none" />
+    </div>
 </template>
 
 <script>
 import LoginComponent from 'src/components/LoginComponent.vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name:'LoginLayout',
   components:{
     LoginComponent
-  },
-  setup(){
-    const users = ref([
-      {user:'Greimer',password:'1234'},
-      {user:'Kenyer',password:'1234'},
-      {user:'Yelitza',password:'1234'}
-    ])
-    return{
-      users
-    }
   }
 })
 </script>
 
 <style>
+body{
+  background-image: linear-gradient(rgb(235, 33, 33),rgb(85, 9, 9),rgb(4, 4, 41));
+  height: 100vh;
+}
 </style>

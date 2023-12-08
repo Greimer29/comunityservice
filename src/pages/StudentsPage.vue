@@ -1,24 +1,24 @@
 <template>
-  <div class="q-pa-xl text-center bg-blue">
-  </div>
     <div
-      class="q-pa-md text-center bg-grey-4"
-      style="margin: auto; width: 98%;"
-      rounded
+      class="q-py-md q-px-xs bg-grey-12"
+      round
     >
-      <history-component :permiso="permisos"/>
-      <div class="q-pt-md">
+      <q-bar dark>
+        <div class="col text-center text-weight-bold">Historial de permisos</div>
+      </q-bar>
+      <div class="q-py-md text-center">
         <q-btn label="Solicitar Permiso" color="positive" to="/students/permise"/>
       </div>
-      {{ user }}
+      <history-component :permiso="data" :user="user" />
     </div>
 </template>
 
 <script>
 import HistoryComponent from 'components/HistoryComponent.vue';
+import { defineComponent,onMounted,ref} from "vue";
+import { useQuasar } from 'quasar';
 import { api } from 'src/boot/axios';
-import { defineComponent, ref, onMounted } from "vue";
-import {useRouter} from 'vue-router'
+import { date } from 'quasar';
 
 export default defineComponent({
     name:'StudentsPage',
@@ -26,57 +26,44 @@ export default defineComponent({
         HistoryComponent
     },
     setup(){
-      const user = ref('')
-      const getUsers = () => {
-        api.get('users/')
+      const $q = useQuasar()
+      const dataForPermises = $q.localStorage.getItem('info')
+      const data = ref([])
+
+      const getPermises = () => {
+        api.get(`users/students/permises/${dataForPermises.user.id}`)
           .then(res => {
-            console.log(res)
-          })
-          .catch(err => {
-            console.log(err)
-          })
+            data.value = res.data
+            data.value.forEach(element => {
+              element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
+              element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
+            })
+          });
       }
-      const getHistorial = () => {
-        api.get('users/permises')
-          .then(res => {
-            console.log(res)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+
+      setInterval(()=>{
+        getPermises()
+      },2000)
 
       onMounted(()=>{
-        getHistorial()
+        getPermises()
       })
 
-      const router = useRouter()
-
-      const permisos = ref([
-        {
-          hsalida:'10:20am',
-          hllegada:'12:20pm',
-          fecha:'1/11/2023',
-          status:true,
-        },
-        {
-          hsalida:'12:20pm',
-          hllegada:'12:20pm',
-          fecha:'1/11/2023',
-          status:true,
-        },
-        {
-          hsalida:'12:20pm',
-          hllegada:'12:20pm',
-          fecha:'1/11/2023',
-          status:false,
-        }
-      ])
-
       return{
-        permisos,
-        user
+        data,
+        user : ref(dataForPermises.user)
       }
     }
 })
 </script>
+<style>
+  .q-banner__actions{
+    justify-content: start;
+    justify-content: left;
+  }
+p {
+  margin: 0;
+  justify-content: left;
+  text-align: left;
+}
+</style>

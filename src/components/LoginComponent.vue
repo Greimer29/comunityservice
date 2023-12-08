@@ -4,16 +4,15 @@
     style="
       padding:15px;
       text-align:center;
-      color:white ;
-      width:340px;
+      min-width:75%;
       height:80%;
-      background-image: linear-gradient(rgba(107, 3, 3, 0.952),rgba(5, 5, 46, 0.815));
-      border-radius: 60px;
+      background-image: linear-gradient(#f8f4f477,#55535377);
+      border-radius: 30px;
     ">
       <div>
           <img
               alt="Quasar logo"
-              src="public\favicon.ico"
+              src="https://cdn.freebiesupply.com/logos/large/2x/marvels-agents-of-shield-logo-png-transparent.png"
               style="max-width: 150px; max-height: 150px"
           >
       </div>
@@ -52,30 +51,40 @@ setup(){
 
   const verificar = () => {
     if((username.value.trim())&&(pass.value.trim())){
-      api.post('users/register/login',{username:username.value,password:pass.value})
+      api.post('users/register/login',{email:username.value,password:pass.value})
         .then((res)=>{
           $q.notify({
               position:'top',
               color:'positive',
               message: 'Bienvenido'
             })
-            router.replace('main')
-            console.log(res)
+
+            $q.localStorage.set('info',res.data)
+            if (res.data.user.type == 1) {
+              router.replace(`/monitor`)
+            }else if (res.data.user.type == 2) {
+              router.replace(`/students`)
+            }else if (res.data.user.type == 3) {
+              router.replace(`/military`)
+            }else if (res.data.user.type == 4) {
+              router.replace(`/main`)
+            }
         })
-        .catch((err)=>{
-          $q.notify({
+       .catch((err)=>{
+          const aja = ref(err)
+          console.log(aja.value)
+            $q.notify({
               position:'bottom',
               type: 'negative',
-              message: 'usuario no encontrado'
+              message: `Su usuario no ha sido encontrado en nuestra base de datos`
             })
-            console.log(err)
         })
     }else{
       $q.notify({
-          position:'top',
-          type: 'warning',
-          message: 'Mi viejo esos campos estan como vacios'
-        })
+        position:'top',
+        type: 'warning',
+        message: 'Mi viejo esos campos estan como vacios'
+      })
     }
   }
 
@@ -91,9 +100,9 @@ setup(){
 <style>
 p,a{
   text-align:center;
-  color:white
+  color:black
 }
 a:hover{
-  color: rgb(193, 194, 224);
+  color: rgb(122, 122, 192);
 }
 </style>

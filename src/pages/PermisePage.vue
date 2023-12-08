@@ -15,7 +15,7 @@
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-time v-model="permission.timeS">
+              <q-time v-model="permission.timeS" now-btn>
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -28,9 +28,7 @@
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-time
-                v-model="permission.timeL"
-              >
+              <q-time v-model="permission.timeL" now-btn>
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -39,6 +37,7 @@
           </q-icon>
         </template>
       </q-input>
+      {{ console.log(permission.dateS) }}
     <q-input class="q-ma-none" type="text" v-model="permission.place" label="Lugar"/>
     <q-input class="q-ma-none" type="text" v-model="permission.motive" label="Motivo"/>
     <q-btn
@@ -52,33 +51,50 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { api } from 'src/boot/axios'
 
 export default defineComponent({
   name:'PermisePage',
   setup () {
     const $q = useQuasar()
+    const data = $q.localStorage.getItem('info')
+    const router = useRouter()
+    const token2 = data.token
     const permission = ref({
-      timeS:'',
-      timeL:'',
+      timeS:'00:00',
+      timeL:'00:00',
       dateS:'',
       dateL:'',
       motive:'',
       place:'',
-      type:''
+      type:'',
+      state:''
     })
+
     const Solicitar = () => {
       if(permission.value.type == 'local'){
         if(permission.value.dateS.trim() && permission.value.timeS.trim() && permission.value.timeL.trim() && permission.value.place.trim() && permission.value.motive.trim()){
-            const {dateL,dateS,timeL,timeS,motive,place,type} = permission.value
-            api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type})
+          if (permission.value.timeS > permission.value.timeL){
+            $q.notify({
+              position:'bottom',
+              type: 'warnning',
+              message: 'La hora de salida no puede ser inferior a la hora de llegada'
+            })
+          }else{
+          const {state,dateS,timeL,timeS,motive,place,type} = permission.value
+            api.post('users/permises',{dateL:permission.value.dateS,dateS,timeL,timeS,motive,place,type,state:'pendiente',used:'no usado'},{
+              headers:{
+                'Authorization':`bearer ${token2}`
+              }
+            })
               .then(res => {
                 $q.notify({
                   position:'top',
-                  type: 'warning',
+                  type: 'positive',
                   message: 'Solicitud de permiso enviado con exito'
                 })
-                console.log(res)
+                router.replace('/students')
               })
               .catch(err => {
                 $q.notify({
@@ -87,8 +103,9 @@ export default defineComponent({
                   message: 'Ha ocurrido un error'
                 })
                 console.log(err)
-              })
-          }else{
+              })}
+          }
+          else{
             $q.notify({
               position:'bottom',
               type: 'warning',
@@ -98,14 +115,18 @@ export default defineComponent({
       }else if(permission.value.type == 'finDe'){
         if(permission.value.dateS.trim() && permission.value.dateL.trim() && permission.value.timeS.trim() && permission.value.timeL.trim() && permission.value.place.trim() && permission.value.motive.trim()){
             const {dateL,dateS,timeL,timeS,motive,place,type} = permission.value
-            api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type})
+            api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type,state:'pendiente',used:'no usado'},{
+              headers:{
+                'Authorization':`bearer ${token2}`
+              }
+            })
               .then(res => {
                 $q.notify({
                   position:'top',
-                  type: 'warning',
+                  type: 'positive',
                   message: 'Solicitud de permiso enviado con exito'
                 })
-                console.log(res)
+                router.replace('/students')
               })
               .catch(err => {
                 $q.notify({
