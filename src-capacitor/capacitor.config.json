@@ -1,0 +1,8 @@
+{
+  "appId": "com.homeplus.app",
+  "appName": "Quasar App",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
