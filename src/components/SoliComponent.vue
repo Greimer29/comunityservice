@@ -30,15 +30,15 @@
       </div>
 
       <div class="q-ma-xs text-white " style="border-top: 2px solid grey;min-width: 95%;">
-            lugar: {{soli.lugar}}
         <div class="flex" style="justify-content: space-between;">
           <div>
-            Motivo: {{soli.motivo}}
+            lugar: {{soli.lugar}}
           </div>
           <div>
             estado: {{ soli.estado }}
           </div>
         </div>
+        Motivo: {{soli.motivo}}
       <div style="display: block;text-align: end;">
         <q-btn label="Aceptar" color="positive" @click="aceptar(soli.id)"/>
         <q-btn label="Rechazar" color="negative" @click="negar(soli.id)"/>

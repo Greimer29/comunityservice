@@ -1,26 +1,31 @@
 <template>
-  <div class="flex flex-center q-mt-md">
+  <div class="flex flex-center full-width">
     <q-toolbar class="q-ma-none">
       <q-toolbar-title class="flex flex-center q-mt-none">
         Complete el formulario de registro
       </q-toolbar-title>
     </q-toolbar>
-    <form  class="q-gutter-md q-mb-md text-center" style="width: 80%;" >
-      <q-input filled  v-model="user.name" label="Nombre" />
-      <q-input filled v-model="user.lastName" label="Apellido" />
-      <q-input filled v-model="user.age" label="Edad" />
-      <q-input filled v-model="user.ci" label="Cedula" />
-      <q-input filled v-model="user.carrer" label="Carrera" />
-      <q-input filled v-model="user.semestre" label="Semestre" />
-      <q-input filled v-model="user.phone" label="Telefono" />
-      <q-input filled v-model="user.nroRoom" label="Nro de Habitacion" />
-      <q-input filled v-model="user.codKey" label="Codigo de Llave" />
-      <q-input filled v-model="user.username" label="Nombre de Usuario" />
-      <q-input filled v-model="user.password" label="contraseña" />
-      <q-input filled v-model="repitPass" label="repetir contraseña" />
-      <q-input filled v-model="user.email" label="correo electronico" />
-      <q-btn  label="REGISTRAR" color="positive" @click="registrar(user)"/>
-    </form>
+    <q-card class="full-width" flat>
+      <q-tabs v-model="tab">
+        <q-tab name="student" label="Estudiante"/>
+        <q-tab name="watchmen" label="Vigilante"/>
+        <q-tab name="monitor" label="Monitor"/>
+      </q-tabs>
+      <q-separator></q-separator>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="student" label="Estudiante">
+          <StudentForm @RegistrarUsuario="registerStudent"/>
+        </q-tab-panel>
+
+        <q-tab-panel name="watchmen" label="Vigilante">
+          <WatchmenForm @RegistrarUsuario="registerUser"/>
+        </q-tab-panel>
+
+        <q-tab-panel name="monitor" label="Monitor">
+          <MonitorForm @RegistrarUsuario="registerUser"/>
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-card>
   </div>
 </template>
 <script>
@@ -28,32 +33,45 @@ import { defineComponent, ref } from 'vue';
 import {api} from 'boot/axios'
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import StudentForm from 'src/components/singupforms/StudentForm.vue'
+import MonitorForm from 'src/components/singupforms/MonitorForm.vue'
+import WatchmenForm from 'src/components/singupforms/WatchmenForm.vue';
 
 export default defineComponent({
   name:'RegisterPage',
+  components:{
+    StudentForm,
+    MonitorForm,
+    WatchmenForm
+  },
   setup(){
   const router = useRouter()
   const $q = useQuasar()
-  const repitPass = ref('')
   const typeMen = ref('')
 
-    const user = ref({
-      name:'',
-      lastName:'',
-      age:'',
-      ci:'',
-      carrer:'',
-      username:'',
-      semestre:'',
-      phone:'',
-      password:'',
-      email:'',
-      codKey:'',
-      nroRoom:'',
-      type:''
+  const registerUser = (usuario) => {
+    api.post('users/register',{
+      user:usuario
     })
+    .then(res => {
+      console.log(res)
+      $q.notify({
+        position:'top',
+        message: 'Usuario creado exitosamente',
+        color:'positive'
+      })
+      router.replace(`/`)
+    })
+    .catch((err)=>{
+      console.log(err)
+      $q.notify({
+        message: 'Lo sentimos ocurrio un problema con el servidor',
+        color:'negative'
+      })
+    })
+  }
 
-    const registrar = (user) => {
+    const registerStudent = (user) => {
       if (
         user.name.trim() &&
         user.lastName.trim() &&
@@ -80,12 +98,12 @@ export default defineComponent({
                 typeMen.value = 1
                 break;
               case 'PortadaAdmin123':
-              typeMen.value = 3
+              typeMen.value = 2
                 break;
               case 'AdminAdmin':
               typeMen.value = 4
                 break;
-              default: typeMen.value = 2
+              default: typeMen.value = 3
                 break;
             }
             api.post('users/register',{
@@ -104,23 +122,12 @@ export default defineComponent({
               type:typeMen.value
             })
               .then((res) => {
-                $q.notify({
-                  position:'top',
-                  message: 'Usuario creado exitosamente',
-                  color:'positive'
-                })
                 router.replace('/')
-              })
-              .catch((err)=>{
-                console.log(err)
-                $q.notify({
-                  message: 'Lo sentimos ocurrio un problema con el servidor',
-                  color:'negative'
-                })
               })
           }
        }else{
         $q.notify({
+          icon:'warning',
           message: 'Hay campos vacios que son requeridos',
           color:'warning'
         })
@@ -128,9 +135,9 @@ export default defineComponent({
     }
 
     return{
-      user,
-      registrar,
-      repitPass
+      registerStudent,
+      registerUser,
+      tab:ref('student')
     }
   }
 })

@@ -12,11 +12,11 @@
         </q-avatar>
         <q-avatar v-show="permiso.estado == 'aprobado'">
           <img
-            src="http://99.30.244.113:9000/icons/aprobedicon.png" alt="correcto"
+            src="icons/aprobedicon.png" alt="correcto"
           />
         </q-avatar>
         <q-avatar v-show="permiso.estado == 'negado'">
-          <img src="http://99.30.244.113:9000/icons/deniedicon.jpg" alt="incorrecto" />
+          <img src="icons/deniedicon.jpg" alt="incorrecto" />
         </q-avatar>
       </div>
       <div  class="q-px-xs  text-white ">

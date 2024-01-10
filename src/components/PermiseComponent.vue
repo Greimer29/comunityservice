@@ -40,7 +40,8 @@
         </div>
         Motivo: {{soli.motivo}}
         <div v-show="soli.estado != 'negado'" style="text-align: end;">
-          <q-btn label="Confirmar" color="positive" @click="quemar(soli.id)"/>
+          <q-btn v-show="salidaFirmed " label="Confirmar salida" color="positive" @click="confiramarSalida(soli.id)"/>
+          <q-btn v-show="llegadaFirmed " label="Confirmar entrada" color="positive" @click="confirmarLlegada(soli.id)"/>
         </div>
       </div>
     </template>
@@ -49,6 +50,7 @@
 
 <script>
 import { defineComponent,ref } from "vue";
+import { date } from "quasar";
 import { api } from "src/boot/axios";
 
 export default defineComponent({
@@ -61,6 +63,36 @@ export default defineComponent({
   },
   setup(){
     const used = ref()
+    const salidaFirmed = ref(true)
+    const llegadaFirmed = ref(false)
+
+    function confiramarSalida(id){
+      const timeExit = Date.now()
+      const formattedTime = date.formatDate(timeExit, 'HH:mm')
+      api.patch(`users/students/permises/confirmed/${id}`,{
+        salidaFirmed:formattedTime,
+        llegadaFirmed:null
+      })
+      .then(res => {
+        console.log(res.data)
+      })
+      salidaFirmed.value = false
+      llegadaFirmed.value = true
+    }
+    function confirmarLlegada(id){
+      const timeArrived = Date.now()
+      const formattedTime = date.formatDate(timeArrived, 'HH:mm')
+      api.patch(`users/students/permises/confirmed/${id}`,{
+        salidaFirmed:null,
+        llegadaFirmed:formattedTime
+      })
+      .then(res => {
+        console.log(res.data)
+      })
+      salidaFirmed.value = false
+      llegadaFirmed.value = false
+      quemar(id)
+    }
     const quemar = (i) =>{
       used.value = 'usado'
       api.patch(`users/students/permises/used/${i}`,{used:used.value})
@@ -74,7 +106,11 @@ export default defineComponent({
     }
 
     return{
-      quemar
+      llegadaFirmed,
+      salidaFirmed,
+      quemar,
+      confiramarSalida,
+      confirmarLlegada
     }
   }
 });

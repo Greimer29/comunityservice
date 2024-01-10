@@ -12,7 +12,7 @@
       <div>
           <img
               alt="Quasar logo"
-              src="https://cdn.freebiesupply.com/logos/large/2x/marvels-agents-of-shield-logo-png-transparent.png"
+              src="public/images/logo_home_plus.webp"
               style="max-width: 150px; max-height: 150px"
           >
       </div>
@@ -63,9 +63,9 @@ setup(){
             if (res.data.user.type == 1) {
               router.replace(`/monitor`)
             }else if (res.data.user.type == 2) {
-              router.replace(`/students`)
-            }else if (res.data.user.type == 3) {
               router.replace(`/military`)
+            }else if (res.data.user.type == 3) {
+              router.replace(`/students`)
             }else if (res.data.user.type == 4) {
               router.replace(`/main`)
             }

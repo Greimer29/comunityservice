@@ -17,8 +17,4 @@ export default defineComponent({
 </script>
 
 <style>
-body{
-  background-image: linear-gradient(rgb(235, 33, 33),rgb(85, 9, 9),rgb(4, 4, 41));
-  height: 100vh;
-}
 </style>

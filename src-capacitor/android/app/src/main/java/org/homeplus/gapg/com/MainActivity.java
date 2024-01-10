@@ -1,4 +1,4 @@
-package com.homeplus.app;
+package org.homeplus.gapg.com;
 
 import com.getcapacitor.BridgeActivity;
 

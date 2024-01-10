@@ -1,6 +1,6 @@
 {
-  "appId": "com.homeplus.app",
-  "appName": "Quasar App",
+  "appId": "org.homeplus.gapg.com",
+  "appName": "Home+",
   "webDir": "www",
   "server": {
     "androidScheme": "https"

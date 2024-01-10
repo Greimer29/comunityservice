@@ -2,7 +2,7 @@
   <q-page >
     <q-bar class="bg-white">
       <q-toolbar-title class="text-center text-bold">
-        Permisos para hoy: {{ today }}
+        <div class="text-grey-8">Permisos para hoy: {{ today }}</div>
       </q-toolbar-title>
     </q-bar>
       <q-card>
