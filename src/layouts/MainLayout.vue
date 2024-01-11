@@ -9,7 +9,7 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-          v-show="loguedUser.user.type == 4"
+          v-show="dataUser.user.type == 4"
         />
 
         <q-toolbar-title style="color:rgba(195, 194, 233, 0.685);">
@@ -19,8 +19,8 @@
         <div>
           <q-toolbar>
             <div>
-              <div class="q-mb-none q-mr-md q-mt-md" style="font-size: medium;">{{ loguedUser.user.nombre }}{{ loguedUser.user.apellido }}</div>
-              <div>{{ loguedUser.user.cedula }}</div><q-menu class="q-mt-xl">
+              <div class="q-mb-none q-mr-md q-mt-md" style="font-size: medium;">{{ dataUser.user.nombre }}{{ dataUser.user.apellido }}</div>
+              <div>{{ dataUser.user.cedula }}</div><q-menu class="q-mt-xl">
               <q-list style="min-width: 120px">
                 <q-item clickable v-close-popup>
                   <q-item-section>Ajustes</q-item-section>
@@ -39,7 +39,7 @@
             </div>
             <!--<q-avatar class="q-ma-xs" size="70px" font-size="52px">
               <img src="https://cdn.quasar.dev/img/avatar.png">
-            
+
             </q-avatar>-->
           </q-toolbar>
         </div>
@@ -76,7 +76,6 @@
 import { defineComponent, ref,onMounted } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
-import { info } from 'autoprefixer'
 
 const linksList = [
   {
@@ -109,12 +108,12 @@ const linksList = [
   setup () {
     const leftDrawerOpen = ref(false)
     const $q = useQuasar()
-    const loguedUser = $q.localStorage.getItem('info')
+    const dataUser = $q.localStorage.getItem('userData')
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
-      loguedUser,
+      dataUser,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }

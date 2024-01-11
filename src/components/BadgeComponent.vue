@@ -22,13 +22,9 @@
             </q-item-section>
           </q-item-section>
 
-          <q-item-section side v-show="student.type == 3">
-            <q-avatar style="height: 35px;width: 35px;" v-show="student.state != false " class="row items-center">
-              <img  src="public\icons\5aa78e387603fc558cffbf1d.png" alt="correcto/incorrecto">
-            </q-avatar>
-            <q-avatar v-show="student.state == false" class="row items-center">
-              <img  src="public\icons\images.jpg" alt="correcto/incorrecto">
-            </q-avatar>
+          <q-item-section side>
+            <div class="flex">
+            </div>
           </q-item-section>
         </template>
 
@@ -42,12 +38,30 @@
               <li> Codigo de llave: {{ student.cod_llave}}</li>
             </ul>
           </q-card-section>
+          <q-card-section side>
+              <q-btn label="eliminar usuario" class="full-width" color="negative" @click="eliminar = true"/>
+          </q-card-section>
         </q-card>
+      <q-dialog v-model="eliminar" persistent>
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="person" color="primary" text-color="white" />
+            <span class="q-ml-sm">Esta cuenta sera eliminada.</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+            <q-btn flat label="Aceptar" color="primary" v-close-popup @click="borrar(student.id)"/>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
       </q-expansion-item>
+
   </div>
 </template>
 
 <script>
+import { api } from 'src/boot/axios'
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
@@ -58,9 +72,22 @@ props:{
   }
 },
 setup(){
+  const eliminar = ref(false)
+
+  function borrar(id){
+    api.delete(`users/${id}`)
+    .then(res=> {
+      console.log(res.data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   return{
     customModel : ref('true'),
+    eliminar,
+    borrar
   }
 }
 })

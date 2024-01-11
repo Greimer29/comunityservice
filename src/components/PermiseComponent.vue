@@ -40,8 +40,8 @@
         </div>
         Motivo: {{soli.motivo}}
         <div v-show="soli.estado != 'negado'" style="text-align: end;">
-          <q-btn v-show="salidaFirmed " label="Confirmar salida" color="positive" @click="confiramarSalida(soli.id)"/>
-          <q-btn v-show="llegadaFirmed " label="Confirmar entrada" color="positive" @click="confirmarLlegada(soli.id)"/>
+          <q-btn v-show="salidaFirmed " label="Confirmar salida" color="positive" @click="confiramarSalida(soli.id)" :key="soli.id"/>
+          <q-btn v-show="llegadaFirmed " label="Confirmar entrada" color="positive" @click="confirmarLlegada(soli.id)" :key="soli.id"/>
         </div>
       </div>
     </template>

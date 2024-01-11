@@ -12,7 +12,9 @@
           <q-tab name="students" label="Estudiantes" />
           <q-tab name="soli" label="solicitudes" />
         </q-tabs>
+
         <q-separator />
+
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="history">
             <q-table
@@ -28,12 +30,15 @@
           </q-tab-panel>
 
           <q-tab-panel name="students">
-            <div class="flex flex-center text-bold text-italic">
-            <div v-show="students.length <= 0" class="flex flex-center text-bold text-italic">
-              <p class="text-grey-7">...No tienes alumnos registrados</p>
-            </div>
-            </div>
+            <q-card>
+              <div class="q-mb-md">
+                <div v-show="students.length == 0" class="flex flex-center text-bold text-italic">
+                  <p class="text-grey-7">...No tienes alumnos registrados</p>
+                </div>
+              </div>
+
               <BadgeComponent style="border-radius: 5px;" :students="students"  />
+            </q-card>
           </q-tab-panel>
 
           <q-tab-panel name="soli" class="q-px-xs" >
@@ -73,12 +78,10 @@ export default defineComponent({
       getStudents()
       getSoliPermises()
     },2000)
-
     onMounted(()=>{
       getSoliPermises()
       getHistoryPermises()
     })
-
     const getStudents = () => {
       api.get('users/students')
         .then(res => {
@@ -86,7 +89,7 @@ export default defineComponent({
         })
     }
     const getSoliPermises = () => {
-      api.get('users/permises/students')
+      api.get('users/permises/requests')
         .then(res => {
           pendigSoli.value = res.data
           pendigSoli.value.forEach(element => {
@@ -99,6 +102,7 @@ export default defineComponent({
       api.get('users/permises')
         .then(res => {
           tableData.value = res.data
+          console.log(tableData.value)
           for (let i = 0; i < tableData.value.length; i++) {
             const {fecha_salida,fecha_llegada,hora_salida_firmada,hora_llegada_firmada,tipo,estado,usado,lugar} = tableData.value[i]
             const {nombre,apellido} = tableData.value[i].users
@@ -110,8 +114,8 @@ export default defineComponent({
               apellido:apellido,
               fSalida:fSF,
               fLlegada:fLF,
-              hSalida:hora_salida_firmada,
-              hLlegada:hora_llegada_firmada,
+              hSalida:estado=='negado'?'NEGADO' : hora_salida_firmada,
+              hLlegada:estado=='negado'?'NEGADO' : hora_llegada_firmada,
               tipo:tipo,
               estado:estado,
               usado:usado,

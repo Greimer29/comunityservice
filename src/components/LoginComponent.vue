@@ -12,7 +12,7 @@
       <div>
           <img
               alt="Quasar logo"
-              src="public/images/logo_home_plus.webp"
+              src="public/icons/homeplus.png"
               style="max-width: 150px; max-height: 150px"
           >
       </div>
@@ -58,8 +58,10 @@ setup(){
               color:'positive',
               message: 'Bienvenido'
             })
+            console.log(res.data)
 
-            $q.localStorage.set('info',res.data)
+            $q.localStorage.set('userData',res.data)
+
             if (res.data.user.type == 1) {
               router.replace(`/monitor`)
             }else if (res.data.user.type == 2) {

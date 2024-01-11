@@ -37,7 +37,6 @@
           </q-icon>
         </template>
       </q-input>
-      {{ console.log(permission.dateS) }}
     <q-input class="q-ma-none" type="text" v-model="permission.place" label="Lugar"/>
     <q-input class="q-ma-none" type="text" v-model="permission.motive" label="Motivo"/>
     <q-btn

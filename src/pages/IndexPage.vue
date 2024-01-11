@@ -18,15 +18,17 @@
         <q-tab name="negados" label="Negados"/>
       </q-tabs>
       <q-separator/>
+          <keep-alive>
       <q-tab-panels   v-model="tab" animated>
         <q-tab-panel name="aprobados" class="q-px-xs">
           <PermiseComponent :permise="aprovedSoli"/>
         </q-tab-panel>
 
         <q-tab-panel name="negados" class="q-px-xs">
-          <PermiseComponent :permise="deniedSoli"/>
+            <PermiseComponent :permise="deniedSoli "/>
         </q-tab-panel>
       </q-tab-panels>
+          </keep-alive>
     </q-card>
   </q-page>
 </template>
@@ -45,7 +47,7 @@ export default defineComponent({
     PermiseComponent
   },
   setup(){
-    const today = date.formatDate(new Date(), 'DD-MM-YYYY')
+    const today = date.formatDate(new Date(), 'DD/MM/YYYY')
     const aprovedSoli = ref([])
     const deniedSoli = ref([])
 

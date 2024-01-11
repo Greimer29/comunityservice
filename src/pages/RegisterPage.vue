@@ -14,7 +14,7 @@
       <q-separator></q-separator>
       <q-tab-panels v-model="tab">
         <q-tab-panel name="student" label="Estudiante">
-          <StudentForm @RegistrarUsuario="registerStudent"/>
+          <StudentForm @RegistrarUsuario="registerUser"/>
         </q-tab-panel>
 
         <q-tab-panel name="watchmen" label="Vigilante">
@@ -47,7 +47,6 @@ export default defineComponent({
   setup(){
   const router = useRouter()
   const $q = useQuasar()
-  const typeMen = ref('')
 
   const registerUser = (usuario) => {
     api.post('users/register',{
@@ -71,71 +70,7 @@ export default defineComponent({
     })
   }
 
-    const registerStudent = (user) => {
-      if (
-        user.name.trim() &&
-        user.lastName.trim() &&
-        user.age.trim() &&
-        user.ci.trim() &&
-        user.carrer.trim() &&
-        user.semestre.trim() &&
-        user.phone.trim() &&
-        user.nroRoom.trim() &&
-        user.codKey.trim() &&
-        user.username.trim() &&
-        user.password.trim() &&
-        user.email.trim() &&
-        repitPass.value.trim()
-        ){
-          if (user.password != repitPass.value) {
-            $q.notify({
-              message: `campo ${repitPass} no coincide con la contrasena`,
-              color:'negative'
-            })
-          }else{
-            switch (user.password) {
-              case 'MonitorAdmin123':
-                typeMen.value = 1
-                break;
-              case 'PortadaAdmin123':
-              typeMen.value = 2
-                break;
-              case 'AdminAdmin':
-              typeMen.value = 4
-                break;
-              default: typeMen.value = 3
-                break;
-            }
-            api.post('users/register',{
-              name:user.name,
-              lastName:user.lastName,
-              age:user.age,
-              ci:user.ci,
-              carrer:user.carrer,
-              semester:user.semestre,
-              phone:user.phone,
-              nroRoom:user.nroRoom,
-              codKey:user.codKey,
-              username:user.username,
-              password:user.password,
-              email:user.email,
-              type:typeMen.value
-            })
-              .then((res) => {
-                router.replace('/')
-              })
-          }
-       }else{
-        $q.notify({
-          icon:'warning',
-          message: 'Hay campos vacios que son requeridos',
-          color:'warning'
-        })
-       }
-    }
-
     return{
-      registerStudent,
       registerUser,
       tab:ref('student')
     }

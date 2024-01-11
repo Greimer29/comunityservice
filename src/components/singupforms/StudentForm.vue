@@ -6,7 +6,7 @@
       <q-input filled v-model="user.age" label="Edad" />
       <q-input filled v-model="user.ci" label="Cedula" />
       <q-input filled v-model="user.carrer" label="Carrera" />
-      <q-input filled v-model="user.semestre" label="Semestre" />
+      <q-input filled v-model="user.semester" label="Semestre" />
       <q-input filled v-model="user.phone" label="Telefono" />
       <q-input filled v-model="user.nroRoom" label="Nro de Habitacion" />
       <q-input filled v-model="user.codKey" label="Codigo de Llave" />
@@ -20,10 +20,12 @@
 </template>
 <script>
 import { defineComponent,ref } from 'vue';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name:'StudentForm',
   setup(){
+    const $q = useQuasar()
     const aja = ref('')
     const user = ref({
       name:'',
@@ -31,7 +33,7 @@ export default defineComponent({
       age:'',
       ci:'',
       carrer:'',
-      semestre:'',
+      semester:'',
       phone:'',
       password:'',
       email:'',
@@ -41,7 +43,36 @@ export default defineComponent({
     })
 
     function registrar(){
-      this.$emit('RegistrarUsuario',user.value)
+      if (
+        user.value.name.trim() &&
+        user.value.lastName.trim() &&
+        user.value.age.trim() &&
+        user.value.ci.trim() &&
+        user.value.carrer.trim() &&
+        user.value.semester.trim() &&
+        user.value.phone.trim() &&
+        user.value.nroRoom.trim() &&
+        user.value.codKey.trim() &&
+        user.value.username.trim() &&
+        user.value.password.trim() &&
+        user.value.email.trim() &&
+        aja.value.trim()
+        ){
+          if (user.value.password != aja.value) {
+            $q.notify({
+              message: `campo ${aja.value} no coincide con la contrasena`,
+              color:'negative'
+            })
+          }else{
+            this.$emit('RegistrarUsuario',user.value)
+          }
+       }else{
+        $q.notify({
+          icon:'warning',
+          message: 'Hay campos vacios que son requeridos',
+          color:'warning'
+        })
+       }
     }
 
     return {
