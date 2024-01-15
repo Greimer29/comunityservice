@@ -81,7 +81,7 @@ export default defineComponent({
       }else{
           $q.notify({
             icon:'warning',
-            color:'warning',
+        type: 'warning',
             position:'bottom',
             message:'Ingrese un codigo'
           })

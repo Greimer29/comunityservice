@@ -27,7 +27,7 @@ export default defineComponent({
     },
     setup(){
       const $q = useQuasar()
-      const dataForPermises = $q.localStorage.getItem('info')
+      const dataForPermises = $q.localStorage.getItem('userData')
       console.log(dataForPermises)
       const data = ref([])
 

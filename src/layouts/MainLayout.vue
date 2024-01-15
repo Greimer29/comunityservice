@@ -19,7 +19,7 @@
         <div>
           <q-toolbar>
             <div>
-              <div class="q-mb-none q-mr-md q-mt-md" style="font-size: medium;">{{ dataUser.user.nombre }}{{ dataUser.user.apellido }}</div>
+              <div class="q-mb-none q-mr-md q-mt-md" style="font-size: medium;">{{ dataUser.user.nombre }} {{ dataUser.user.apellido }}</div>
               <div>{{ dataUser.user.cedula }}</div><q-menu class="q-mt-xl">
               <q-list style="min-width: 120px">
                 <q-item clickable v-close-popup>
@@ -31,7 +31,7 @@
                 </q-item>
                 <q-item clickable v-close-popup>
                   <q-item-section>
-                    <q-btn flat label="salir" to="/"/>
+                    <q-btn flat label="salir" @click="exit"/>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -76,6 +76,7 @@
 import { defineComponent, ref,onMounted } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 
 const linksList = [
   {
@@ -109,6 +110,12 @@ const linksList = [
     const leftDrawerOpen = ref(false)
     const $q = useQuasar()
     const dataUser = $q.localStorage.getItem('userData')
+    const router = useRouter()
+
+    const exit = ()=>{
+      router.replace('/')
+      $q.localStorage.remove('userData')
+    }
 
     return {
       essentialLinks: linksList,
@@ -116,7 +123,8 @@ const linksList = [
       dataUser,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      },
+      exit
     }
   }
 })

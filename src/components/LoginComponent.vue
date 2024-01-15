@@ -12,7 +12,7 @@
       <div>
           <img
               alt="Quasar logo"
-              src="public/icons/homeplus.png"
+              src="homeplus.png"
               style="max-width: 150px; max-height: 150px"
           >
       </div>

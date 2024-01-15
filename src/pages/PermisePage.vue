@@ -57,7 +57,7 @@ export default defineComponent({
   name:'PermisePage',
   setup () {
     const $q = useQuasar()
-    const data = $q.localStorage.getItem('info')
+    const data = $q.localStorage.getItem('userData')
     const router = useRouter()
     const token2 = data.token
     const permission = ref({
