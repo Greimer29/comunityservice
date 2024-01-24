@@ -6,7 +6,7 @@
       text-align:center;
       min-width:75%;
       height:80%;
-      background-image: linear-gradient(#f8f4f477,#55535377);
+      background-image: linear-gradient(#b12e2e77,#55535377);
       border-radius: 30px;
     ">
       <div>
