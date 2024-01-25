@@ -7,7 +7,7 @@
     <q-form class="q-gutter-md text-center">
       <q-input filled label="Nombre" v-model="user.name"/>
       <q-input filled label="Apellido" v-model="user.lastName"/>
-      <q-input v-model="user.email" filled placeholder="email@portada.com" label="Email" type="email" />
+      <q-input v-model="user.email" type="email" filled label="Email" />
       <q-input v-model="user.password" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
         <template v-slot:append>
           <q-icon

@@ -5,15 +5,31 @@
       <q-input filled v-model="user.lastName" label="Apellido" />
       <q-input filled v-model="user.age" label="Edad" />
       <q-input filled v-model="user.ci" label="Cedula" />
-      <q-input filled v-model="user.carrer" label="Carrera" />
-      <q-input filled v-model="user.semester" label="Semestre" />
+      <q-select filled v-model="user.carrer" :options="carrerOp" label="Carrera" />
+      <q-select filled v-model="user.semester" :options="semesterOp" label="Semestre" />
       <q-input filled v-model="user.phone" label="Telefono" />
       <q-input filled v-model="user.nroRoom" label="Nro de Habitacion" />
       <q-input filled v-model="user.codKey" label="Codigo de Llave" />
       <q-input filled v-model="user.username" label="Nombre de Usuario" />
-      <q-input filled v-model="user.password" label="contraseña" />
-      <q-input filled v-model="aja" label="repetir contraseña" />
-      <q-input filled v-model="user.email" label="correo electronico" />
+      <q-input v-model="user.password" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+      <q-input v-model="aja" filled :type="isRpwd ? 'password' : 'text'" label="RepetirContraseña">
+        <template v-slot:append>
+          <q-icon
+            :name="isRpwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isRpwd = !isRpwd"
+          />
+        </template>
+      </q-input>
+      <q-input filled v-model="user.email" type="email" label="correo electronico" />
       <q-btn  label="REGISTRAR" color="positive" @click="registrar(user)"/>
     </q-form>
   </div>
@@ -27,6 +43,8 @@ export default defineComponent({
   setup(){
     const $q = useQuasar()
     const aja = ref('')
+    const carrerOp = ['Informática',"Administración de Empresas","Administración de Personal","Preescolar","Teología"]
+    const semesterOp = ['1ero',"2do","3ero","4to","5to","6to","7mo","8vo","9no"]
     const user = ref({
       name:'',
       lastName:'',
@@ -76,8 +94,12 @@ export default defineComponent({
     }
 
     return {
+      isPwd: ref(true),
+      isRpwd: ref(true),
       user,
+      carrerOp,
       aja,
+      semesterOp,
       registrar
     }
   }

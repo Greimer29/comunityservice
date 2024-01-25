@@ -6,7 +6,7 @@
       text-align:center;
       min-width:75%;
       height:80%;
-      background-image: linear-gradient(#b12e2e77,#55535377);
+      background-image: linear-gradient(#dbd7d777,#55535377);
       border-radius: 30px;
     ">
       <div>
@@ -17,9 +17,16 @@
           >
       </div>
       <div class="q-gutter-md" style=" margin:30px; padding:0px; max-width:300px; text-align:center">
-          <q-input v-model="username" filled label="Email"/>
-          <q-input v-model="pass" filled label="Contraseña" type="password"/>
-      </div>
+          <q-input v-model="username" type="email" filled label="Email"/>
+          <q-input v-model="pass" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>      </div>
 
       <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin:5px">
           <q-checkbox  label="Recuerdame" v-model="remem" />
@@ -92,6 +99,7 @@ setup(){
 
   return{
     remem : ref(false),
+    isPwd: ref(true),
     username,
     pass,
     verificar

@@ -2,13 +2,13 @@
   <div class="flex flex-center full-width">
     <q-toolbar class="q-ma-none">
       <q-toolbar-title class="flex flex-center q-mt-none">
-        Complete el formulario de registro
+        <div class="text-grey text-italic">Complete el formulario de registro</div>
       </q-toolbar-title>
     </q-toolbar>
     <q-card class="full-width" flat>
       <q-tabs v-model="tab">
         <q-tab name="student" label="Estudiante"/>
-        <q-tab name="watchmen" label="Vigilante"/>
+        <q-tab name="watchmen" label="Seguridad"/>
         <q-tab name="monitor" label="Monitor"/>
       </q-tabs>
       <q-separator></q-separator>
@@ -17,7 +17,7 @@
           <StudentForm @RegistrarUsuario="registerUser"/>
         </q-tab-panel>
 
-        <q-tab-panel name="watchmen" label="Vigilante">
+        <q-tab-panel name="watchmen" label="Seguridad">
           <WatchmenForm @RegistrarUsuario="registerUser"/>
         </q-tab-panel>
 

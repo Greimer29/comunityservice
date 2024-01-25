@@ -47,6 +47,7 @@
     </q-header>
 
     <q-drawer
+    v-show="dataUser.user.type == '4'"
       v-model="leftDrawerOpen"
       show-if-above
       bordered
