@@ -43,10 +43,12 @@
 import { defineComponent,ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { api } from 'src/boot/axios';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name:'StudentForm',
   setup(){
+    const router = useRouter()
     const $q = useQuasar()
     const aja = ref('')
     const selectedFile = ref();
