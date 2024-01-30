@@ -17,10 +17,22 @@
         </q-toolbar-title>
 
         <div>
-          <q-toolbar>
+          <q-toolbar class="q-pa-sm">
             <div>
-              <div class="q-mb-none q-mr-md q-mt-md" style="font-size: medium;">{{ dataUser.user.nombre }} {{ dataUser.user.apellido }}</div>
-              <div>{{ dataUser.user.cedula }}</div><q-menu class="q-mt-xl">
+              <div class="flex flex-center q-gutter-xs">
+              <div>
+                <q-btn round color="white">
+                  <q-avatar size="50px">
+                    <img :src="`http://localhost:3333/${dataUser.user.foto_url}`" />
+                  </q-avatar>
+                </q-btn>
+              </div>
+              <div>
+                <div class="q-mb-none q-mr-md q-mt-xs text-bold" style="font-size: medium;">{{ dataUser.user.nombre }} {{ dataUser.user.apellido }}</div>
+                <div>{{ dataUser.user.cedula }}</div>
+              </div>
+            </div>
+              <q-menu class="q-mt-xl">
               <q-list style="min-width: 120px">
                 <q-item clickable v-close-popup>
                   <q-item-section>Ajustes</q-item-section>

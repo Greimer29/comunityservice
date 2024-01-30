@@ -14,7 +14,7 @@
       <q-separator></q-separator>
       <q-tab-panels v-model="tab">
         <q-tab-panel name="student" label="Estudiante">
-          <StudentForm @RegistrarUsuario="registerUser"/>
+          <StudentForm />
         </q-tab-panel>
 
         <q-tab-panel name="watchmen" label="Seguridad">
@@ -44,31 +44,33 @@ export default defineComponent({
     MonitorForm,
     WatchmenForm
   },
-  setup(){
-  const router = useRouter()
-  const $q = useQuasar()
+    setup(){
+    const router = useRouter()
+    const $q = useQuasar()
+    const user = ref()
 
-  const registerUser = (usuario) => {
-    api.post('users/register',{
-      user:usuario
-    })
-    .then(res => {
-      console.log(res)
-      $q.notify({
-        position:'top',
-        message: 'Usuario creado exitosamente',
-        color:'positive'
+    const registerUser = (usuario) => {
+      api.post('users/register',{
+        user:usuario.user
       })
-      router.replace(`/`)
-    })
-    .catch((err)=>{
-      console.log(err)
-      $q.notify({
-        message: 'Lo sentimos ocurrio un problema con el servidor',
-        color:'negative'
+      .then(res => {
+        console.log(res)
+        user.value = res.data
+        $q.notify({
+          position:'top',
+          message: 'Usuario creado exitosamente',
+          color:'positive'
+        })
+        router.replace(`/`)
       })
-    })
-  }
+      .catch((err)=>{
+        console.log(err)
+        $q.notify({
+          message: 'Lo sentimos ocurrio un problema con el servidor',
+          color:'negative'
+        })
+      })
+    }
 
     return{
       registerUser,
