@@ -28,7 +28,6 @@ export default defineComponent({
     setup(){
       const $q = useQuasar()
       const dataForPermises = $q.localStorage.getItem('userData')
-      console.log(dataForPermises)
       const data = ref([])
 
       const getPermises = () => {
@@ -41,10 +40,6 @@ export default defineComponent({
             })
           });
       }
-
-      setInterval(()=>{
-        getPermises()
-      },2000)
 
       onMounted(()=>{
         getPermises()
