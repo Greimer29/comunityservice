@@ -27,12 +27,10 @@
                 </q-item>
                 <q-separator />
                 <q-item clickable v-close-popup>
-                  <q-item-section>Cuenta</q-item-section>
+                  <q-item-section @click="goTo(dataUser.user.id)">Cuenta</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup>
-                  <q-item-section>
-                    <q-btn flat label="salir" @click="exit"/>
-                  </q-item-section>
+                  <q-item-section @click="exit"> Salir </q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -113,6 +111,10 @@ const linksList = [
     const dataUser = $q.localStorage.getItem('userData')
     const router = useRouter()
 
+    const goTo = (id) => {
+      router.push(`/user/count/${id}`)
+    }
+
     const exit = ()=>{
       router.replace('/')
       $q.localStorage.remove('userData')
@@ -125,7 +127,8 @@ const linksList = [
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      exit
+      exit,
+      goTo
     }
   }
 })
