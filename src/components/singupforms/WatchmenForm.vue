@@ -1,6 +1,6 @@
 <template>
   <div class="q-gutter-md text-center" v-show="!show">
-    <q-input v-model="cod" label="Codigo de Portada"/>
+    <q-input v-model="cod" label="Código de Portada"/>
     <q-btn label="verificar codigo" color="primary" @click="enviar"/>
   </div>
   <div class="q-pa-md" v-show="show">
@@ -72,16 +72,25 @@ export default defineComponent({
       })
       .catch(err => {
         console.log(err)
+        if(err.code == "ERR_NETWORK"){
           $q.notify({
             color:'negative',
             position:'bottom',
-            message:'Codigo invalido'
+            message:'Eror de conexión'
           })
+        }
+        if(err.response.status == 502){
+          $q.notify({
+            color:'negative',
+            position:'bottom',
+            message:'Código inválido'
+          })
+        }
       })
       }else{
           $q.notify({
             icon:'warning',
-        type: 'warning',
+            type: 'warning',
             position:'bottom',
             message:'Ingrese un codigo'
           })

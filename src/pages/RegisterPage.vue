@@ -51,7 +51,7 @@ export default defineComponent({
 
     const registerUser = (usuario) => {
       api.post('users/register',{
-        user:usuario.user
+        user:usuario
       })
       .then(res => {
         console.log(res)

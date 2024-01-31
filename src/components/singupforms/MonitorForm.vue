@@ -7,7 +7,7 @@
     <q-form class="q-gutter-md text-center">
       <q-input label="Nombre" v-model="user.name"/>
       <q-input label="Apellido" v-model="user.lastName"/>
-      <q-input v-model="user.email" :type="email" filled placeholder="monitor@gmail.com" label="Email" type="email" />
+      <q-input v-model="user.email" filled placeholder="monitor@gmail.com" label="Email" type="email" />
       <q-input v-model="user.password" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
         <template v-slot:append>
           <q-icon
@@ -73,11 +73,20 @@ export default defineComponent({
       })
       .catch(err => {
         console.log(err)
+        if(err.code == "ERR_NETWORK"){
           $q.notify({
             color:'negative',
             position:'bottom',
-            message:'Codigo invalido'
+            message:'Eror de conexión'
           })
+        }
+        if(err.response.status == 502){
+          $q.notify({
+            color:'negative',
+            position:'bottom',
+            message:'Código inválido'
+          })
+        }
       })
     }else{
           $q.notify({

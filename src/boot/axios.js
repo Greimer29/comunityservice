@@ -2,7 +2,7 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 const remoteServer = 'https://homeplus.iunav.edu.ve/'
 const localServer = 'http://localhost:3333/'
-const api = axios.create({ baseURL: remoteServer })
+const api = axios.create({ baseURL: localServer })
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

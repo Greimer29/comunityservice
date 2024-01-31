@@ -6,11 +6,11 @@
         v-for="(student,index) in students" :key="index"
         class="q-pa-md"
         style="min-width: 100%;"
-      >
+      >{{ console.log(student) }}
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
-              <q-img src="public\descarga.jpg" style="width: 50px;width: 60px;"/>
+              <q-img :src="`http://localhost:3333/${student.foto_url}`" style="width: 50px;width: 60px;"/>
             </q-avatar>
           </q-item-section>
 

@@ -80,13 +80,21 @@ setup(){
             }
         })
        .catch((err)=>{
-          const aja = ref(err)
-          console.log(aja.value)
+          if(err.code == "ERR_NETWORK"){
+            $q.notify({
+              color:'negative',
+              position:'bottom',
+              message:'Eror de conexión'
+            })
+          }else{
             $q.notify({
               position:'bottom',
               type: 'negative',
               message: `Su usuario no ha sido encontrado en nuestra base de datos`
             })
+          }
+          console.log(aja.value)
+
         })
     }else{
       $q.notify({

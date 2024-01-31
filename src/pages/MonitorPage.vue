@@ -109,6 +109,7 @@ export default defineComponent({
       api.get('users/students')
         .then(res => {
           students.value = res.data
+          console.log(students.value)
         })
     }
     const getSoliPermises = () => {

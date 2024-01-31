@@ -118,12 +118,20 @@ export default defineComponent({
               })
               .catch((err)=>{
                 console.log(err)
-                $q.notify({
-                  message: 'Lo sentimos ocurrio un problema con el servidor',
-                  color:'negative'
-                })
+                if(err.code == "ERR_NETWORK"){
+                  $q.notify({
+                    color:'negative',
+                    position:'bottom',
+                    message:'Eror de conexión'
+                  })
+                }else{
+                  $q.notify({
+                    color:'negative',
+                    position:'bottom',
+                    message:'Lo sentimos ocurrio un error con el servidor'
+                  })
+                }
               })
-
             } else {
               $q.notify({
                 message: `Algunos campos requeridos estan vacios`,

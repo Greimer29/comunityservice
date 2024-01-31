@@ -5,10 +5,11 @@
     :key="index"
     rounded
   >
+  {{ console.log(soli) }}
     <template v-slot:action >
       <div class="q-pa-xs">
         <q-avatar >
-          <q-img src="public\favicon.ico" />
+          <q-img :src="`http://localhost:3333/${soli.users.foto_url}`" />
         </q-avatar>
       </div>
       <div  class="q-px-xs text-white ">
