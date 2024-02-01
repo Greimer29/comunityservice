@@ -23,7 +23,7 @@
               <div>
                 <q-btn round color="white">
                   <q-avatar size="50px">
-                    <img :src="`http://localhost:3333/${dataUser.user.foto_url}`" />
+                    <img :src="`http://localhost:3333/avatar/${userAvatar}`" />
                   </q-avatar>
                 </q-btn>
               </div>
@@ -121,7 +121,9 @@ const linksList = [
     const leftDrawerOpen = ref(false)
     const $q = useQuasar()
     const dataUser = $q.localStorage.getItem('userData')
+    const userAvatar = ref(dataUser.user.foto_url);
     const router = useRouter()
+    console.log(dataUser)
 
     const goTo = (id) => {
       router.push(`/user/count/${id}`)
@@ -136,6 +138,7 @@ const linksList = [
       essentialLinks: linksList,
       leftDrawerOpen,
       dataUser,
+      userAvatar,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },

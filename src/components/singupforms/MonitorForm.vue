@@ -40,7 +40,7 @@ export default defineComponent({
   emits:['RegistrarUsuario'],
   setup(){
     const repitPassword = ref('')
-    const show = ref(false)
+    const show = ref(true)
     const cod = ref('')
     const $q = useQuasar()
 
