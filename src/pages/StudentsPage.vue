@@ -41,6 +41,10 @@ export default defineComponent({
           });
       }
 
+      setInterval(()=>{
+        getPermises()
+      },2000)
+
       onMounted(()=>{
         getPermises()
       })

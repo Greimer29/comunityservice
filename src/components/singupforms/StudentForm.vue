@@ -147,9 +147,6 @@ export default defineComponent({
         })
        }
     }
-    const registerUser = (usuario) => {
-
-    }
 
     return {
       selectedFile,

@@ -5,9 +5,14 @@
   </div>
   <div class="q-pa-md" v-show="show">
     <q-form class="q-gutter-md text-center">
-      <q-input label="Nombre" v-model="user.name"/>
-      <q-input label="Apellido" v-model="user.lastName"/>
-      <q-input v-model="user.email" filled placeholder="monitor@gmail.com" label="Email" type="email" />
+      <q-file type="file" filled v-model="selectedFile" label="Seleccionar imagen de usuario">
+        <template v-slot:prepend>
+          <q-icon name="attachment" />
+        </template>
+      </q-file>
+      <q-input filled label="Nombre" v-model="user.name"/>
+      <q-input filled label="Apellido" v-model="user.lastName"/>
+      <q-input v-model="user.email" filled label="Email" type="email" />
       <q-input v-model="user.password" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
         <template v-slot:append>
           <q-icon
@@ -40,7 +45,8 @@ export default defineComponent({
   emits:['RegistrarUsuario'],
   setup(){
     const repitPassword = ref('')
-    const show = ref(false)
+    const show = ref(true)
+    const selectedFile = ref();
     const cod = ref('')
     const $q = useQuasar()
 
@@ -99,10 +105,76 @@ export default defineComponent({
     }
 
     function registrar(){
-      this.$emit('RegistrarUsuario',user.value)
+      if(
+        user.value.name.trim() &&
+        user.value.lastName.trim() &&
+        user.value.email.trim() &&
+        user.value.password.trim()
+        ){
+          if (user.value.password != repitPassword.value) {
+            $q.notify({
+              message: `campo ${repitPassword.value} no coincide con la contrasena`,
+              color:'negative'
+            })
+          }else{
+            if (selectedFile.value != null) {
+              const formData = new FormData();
+              formData.append("image", selectedFile.value);
+
+              api.post('users/register',{
+                user:user.value
+              })
+              .then(res => {
+                console.log(res.data)
+                $q.notify({
+                  position:'top',
+                  message: 'Usuario creado exitosamente',
+                  color:'positive'
+                })
+                api
+                  .post(`users/upload/image/${res.data.newUser.id}`, formData)
+                  .then((res) => {
+                    console.log(res.data);
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
+
+                router.replace(`/`)
+              })
+              .catch((err)=>{
+                console.log(err)
+                if(err.code == "ERR_NETWORK"){
+                  $q.notify({
+                    color:'negative',
+                    position:'bottom',
+                    message:'Eror de conexión'
+                  })
+                }else{
+                  $q.notify({
+                    color:'negative',
+                    position:'bottom',
+                    message:'Lo sentimos ocurrio un error con el servidor'
+                  })
+                }
+              })
+            } else {
+              $q.notify({
+                message: `Algunos campos requeridos estan vacios`,
+                color:'warning'
+              })
+            }
+          }
+        }else {
+          $q.notify({
+            message: `Algunos campos requeridos estan vacios`,
+            color:'warning'
+          })
+        }
     }
 
     return {
+      selectedFile,
       show,
       user,
       repitPassword,

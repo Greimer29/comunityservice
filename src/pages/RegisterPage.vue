@@ -18,11 +18,11 @@
         </q-tab-panel>
 
         <q-tab-panel name="watchmen" label="Seguridad">
-          <WatchmenForm @RegistrarUsuario="registerUser"/>
+          <WatchmenForm/>
         </q-tab-panel>
 
         <q-tab-panel name="monitor" label="Monitor">
-          <MonitorForm @RegistrarUsuario="registerUser"/>
+          <MonitorForm/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -45,35 +45,8 @@ export default defineComponent({
     WatchmenForm
   },
     setup(){
-    const router = useRouter()
-    const $q = useQuasar()
-    const user = ref()
-
-    const registerUser = (usuario) => {
-      api.post('users/register',{
-        user:usuario
-      })
-      .then(res => {
-        console.log(res)
-        user.value = res.data
-        $q.notify({
-          position:'top',
-          message: 'Usuario creado exitosamente',
-          color:'positive'
-        })
-        router.replace(`/`)
-      })
-      .catch((err)=>{
-        console.log(err)
-        $q.notify({
-          message: 'Lo sentimos ocurrio un problema con el servidor',
-          color:'negative'
-        })
-      })
-    }
 
     return{
-      registerUser,
       tab:ref('student')
     }
   }
