@@ -23,7 +23,7 @@
               <div>
                 <q-btn round color="white">
                   <q-avatar size="50px">
-                    <img :src="`http://localhost:3333/avatar/${userAvatar}`" />
+                    <img :src="`https://homeplus.iunav.edu.ve/avatar/${userAvatar}`" />
                   </q-avatar>
                 </q-btn>
               </div>

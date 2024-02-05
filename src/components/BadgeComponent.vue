@@ -10,7 +10,7 @@
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
-              <q-img :src="`http://localhost:3333/${student.foto_url}`" style="width: 50px;width: 60px;"/>
+              <q-img :src="`https://homeplus.iunav.edu.ve/avatar/${student.foto_url}`" style="width: 50px;width: 60px;"/>
             </q-avatar>
           </q-item-section>
 

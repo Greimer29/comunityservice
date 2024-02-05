@@ -9,7 +9,7 @@
     <template v-slot:action >
       <div class="q-pa-xs">
         <q-avatar >
-          <q-img :src="`http://localhost:3333/${soli.users.foto_url}`" />
+          <q-img :src="`https://homeplus.iunav.edu.ve/avatar/${soli.users.foto_url}`" />
         </q-avatar>
       </div>
       <div  class="q-px-xs text-white ">
