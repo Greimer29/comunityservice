@@ -48,6 +48,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
+      env:{
+        LOCAL_API:'http://localhost:3333/',
+        REMOTE_API:'https://homeplus.iunav.edu.ve/'
+      },
       target: {
         browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],
         node: 'node16'
