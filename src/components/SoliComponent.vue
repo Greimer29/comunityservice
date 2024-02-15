@@ -19,7 +19,7 @@
       </div>
       <q-separator vertical color="grey"/>
       <div  class="q-px-xs text-white ">
-        <div>Permiso: {{soli.tipo}}</div>
+        <div>Tipo: {{soli.tipo}}</div>
         <div> {{soli.fecha_salida}}</div>
         <div> {{soli.fecha_llegada}}</div>
       </div>

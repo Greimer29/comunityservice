@@ -21,7 +21,7 @@
           <keep-alive>
       <q-tab-panels   v-model="tab" animated>
         <q-tab-panel name="aprobados" class="q-px-xs">
-          <PermiseComponent :permise="aprovedSoli"/>
+          <PermiseComponent :permise="aprovedSoli" @RecallPermises="getAprovedPermises"/>
         </q-tab-panel>
 
         <q-tab-panel name="negados" class="q-px-xs">
@@ -88,7 +88,8 @@ export default defineComponent({
       tab: ref('aprobados'),
       aprovedSoli,
       deniedSoli,
-      today
+      today,
+      getAprovedPermises
     }
   }
 })
