@@ -62,6 +62,7 @@ export default defineComponent({
       required: true,
     }
   },
+  emits:['RecallPermises'],
   setup(){
     const used = ref()
     const salidaFirmed = ref(true)

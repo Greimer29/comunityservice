@@ -92,26 +92,24 @@ export default defineComponent({
   },
   setup(){
     const pendigSoli = ref([])
-    const tableData = ref([])
+    const tableData = ref(['nombre','apellido'])
     const students = ref([])
-    const userPermise = ref([])
-    const fSF = ref('')
-    const fLF = ref('')
+    const userPermise = ref(['nombre','apellido'])
+    const row = ref([])
 
     setInterval(()=>{
       getStudents()
       getSoliPermises()
+      getHistoryPermises()
     },2000)
     onMounted(()=>{
       getSoliPermises()
-      getHistoryPermises()
       getHistoryPermises()
     })
     const getStudents = () => {
       api.get('users/students')
         .then(res => {
           students.value = res.data
-          console.log(students.value)
         })
     }
     const getSoliPermises = () => {
@@ -124,7 +122,7 @@ export default defineComponent({
           });
         })
     }
-    const getHistoryPermises = () => {
+    /* const getHistoryPermises = () => {
       api.get('users/permises')
         .then(res => {
           tableData.value = res.data
@@ -150,14 +148,28 @@ export default defineComponent({
             userPermise.value.push(newUserPermise)
           }
         })
+    } */
+
+    const getHistoryPermises = () => {
+      api.get('users/permises')
+        .then(res => {
+          tableData.value = res.data
+          tableData.value.forEach(element => {
+            element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
+            element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
+            console.log(element)
+          })
+          row.value = tableData.value
+        })
     }
+
     const column = [
       {name:'alumName',label:'Estudiante',field:'nombre'},
       {name:'alumLastName',label:'Apellido',field:'apellido'},
-      {name:'alumFsalida',label:'Fecha de Salida',field:'fSalida'},
-      {name:'alumFLlegada',label:'Fecha de Llegada',field:'fLlegada'},
-      {name:'alumHSalida',label:'Hora de Salida',field:'hSalida'},
-      {name:'alumHLlegada',label:'Hora de Llegada',field:'hLlegada'},
+      {name:'alumFsalida',label:'Fecha de Salida',field:'fecha_salida'},
+      {name:'alumFLlegada',label:'Fecha de Llegada',field:'fecha_llegada'},
+      {name:'alumHSalida',label:'Hora de Salida',field:'hora_salida_firmada'},
+      {name:'alumHLlegada',label:'Hora de Llegada',field:'hora_llegada_firmada'},
       {name:'alumTipoPermiso',label:'tipo de permiso',field:'tipo'},
       {name:'alumUsedPermise',label:'lugar',field:'lugar'},
       {name:'alumEstadoPermiso',label:'Estado',field:'estado'},
@@ -194,7 +206,7 @@ export default defineComponent({
 
     return{
       tab: ref('soli'),
-      row:userPermise,
+      row,
       column,
       students,
       pendigSoli,

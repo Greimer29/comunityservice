@@ -46,6 +46,7 @@ export default defineComponent({
     BadgeComponent,
     PermiseComponent
   },
+  emits: ['RecallPermises'],
   setup(){
     const today = date.formatDate(new Date(), 'DD/MM/YYYY')
     const aprovedSoli = ref([])
