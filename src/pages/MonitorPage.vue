@@ -112,6 +112,7 @@ export default defineComponent({
           students.value = res.data
         })
     }
+
     const getSoliPermises = () => {
       api.get('users/permises/requests')
         .then(res => {
@@ -122,33 +123,6 @@ export default defineComponent({
           });
         })
     }
-    /* const getHistoryPermises = () => {
-      api.get('users/permises')
-        .then(res => {
-          tableData.value = res.data
-          console.log(tableData.value)
-          for (let i = 0; i < tableData.value.length; i++) {
-            const {fecha_salida,fecha_llegada,hora_salida_firmada,hora_llegada_firmada,tipo,estado,usado,lugar} = tableData.value[i]
-            const {nombre,apellido} = tableData.value[i].users
-            fSF.value = date.formatDate(fecha_salida, 'DD-MM-YYYY')
-            fLF.value = date.formatDate(fecha_llegada, 'DD-MM-YYYY')
-
-            const newUserPermise = {
-              nombre:nombre,
-              apellido:apellido,
-              fSalida:fSF,
-              fLlegada:fLF,
-              hSalida:estado=='negado'?'NEGADO' : hora_salida_firmada,
-              hLlegada:estado=='negado'?'NEGADO' : hora_llegada_firmada,
-              tipo:tipo,
-              estado:estado,
-              usado:usado,
-              lugar:lugar
-            }
-            userPermise.value.push(newUserPermise)
-          }
-        })
-    } */
 
     const getHistoryPermises = () => {
       api.get('users/permises')
@@ -157,15 +131,17 @@ export default defineComponent({
           tableData.value.forEach(element => {
             element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
             element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
-            console.log(element)
+            element.hora_llegada = element.users.nombre
+            element.hora_salida = element.users.apellido
+            console.log(element.users)
           })
           row.value = tableData.value
         })
     }
 
     const column = [
-      {name:'alumName',label:'Estudiante',field:'nombre'},
-      {name:'alumLastName',label:'Apellido',field:'apellido'},
+      {name:'alumName',label:'Estudiante',field:'hora_llegada'},
+      {name:'alumLastName',label:'Apellido',field:'hora_salida'},
       {name:'alumFsalida',label:'Fecha de Salida',field:'fecha_salida'},
       {name:'alumFLlegada',label:'Fecha de Llegada',field:'fecha_llegada'},
       {name:'alumHSalida',label:'Hora de Salida',field:'hora_salida_firmada'},
