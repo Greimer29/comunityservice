@@ -1,4 +1,4 @@
-package org.homeplus.gapg.com;
+package iunav.homeplus.edu;
 
 import com.getcapacitor.BridgeActivity;
 

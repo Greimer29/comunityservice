@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "262788313255",
+    "project_id": "homeplusnotify",
+    "storage_bucket": "homeplusnotify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262788313255:android:a78ec5ee0c84c9a70d2b82",
+        "android_client_info": {
+          "package_name": "iunav.homeplus.edu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsy7W3KwFrKq1SiD-DRxjnYjI3WVxAHhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
