@@ -27,7 +27,7 @@
               no-results-label="No se encontraron coincidencias"
             >
               <template v-slot:top-right>
-                <q-btn label="export" color="primary" icon-right="archive" no-caps @click="exportTable"/>
+                <q-btn label="Export" color="primary" icon-right="archive" no-caps @click="exportTable"/>
               </template>
             </q-table>
           </q-tab-panel>
@@ -48,7 +48,7 @@
             <div v-show="pendigSoli == 0" class="flex flex-center text-bold text-italic">
               <p  class="text-grey-7">...No tiene solicitudes pendientes</p>
             </div>
-            <SoliComponent :soliPending="pendigSoli" />
+            <SoliComponent :soliPending="pendigSoli" @RecallPermises="getSoliPermises"/>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -57,31 +57,11 @@
 <script>
 import { defineComponent,ref, onMounted } from 'vue'
 import { api } from 'src/boot/axios';
-import { exportFile, useQuasar , date } from 'quasar';
+import {date } from 'quasar';
+import exportXlsFile from 'export-from-json'
 import HistoryComponent from 'src/components/HistoryComponent.vue';
 import SoliComponent from 'src/components/SoliComponent.vue';
 import BadgeComponent from 'src/components/BadgeComponent.vue';
-
-function wrapCsvValue (val, formatFn, row) {
-  let formatted = formatFn !== void 0
-    ? formatFn(val, row)
-    : val
-
-  formatted = formatted === void 0 || formatted === null
-    ? ''
-    : String(formatted)
-
-  formatted = formatted.split('\r').join('\\r')
-  /**
-   * Excel accepts \n and \r in strings, but some other CSV parsers do not
-   * Uncomment the next two lines to escape new lines
-   */
-  // .split('\n').join('\\n')
-  // .split('"').join('""')
-  // .split('\r').join('\\r')
-
-  return `"${formatted}"`
-}
 
 export default defineComponent({
   name: 'MonitorPage',
@@ -94,7 +74,7 @@ export default defineComponent({
     const pendigSoli = ref([])
     const tableData = ref(['nombre','apellido'])
     const students = ref([])
-    const userPermise = ref(['nombre','apellido'])
+    const userPermise = ref([])
     const row = ref([])
 
     setInterval(()=>{
@@ -131,9 +111,7 @@ export default defineComponent({
           tableData.value.forEach(element => {
             element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
             element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
-            element.hora_llegada = element.users.nombre
-            element.hora_salida = element.users.apellido
-            console.log(element.users)
+            element.hora_llegada = `${element.users.nombre} ${element.users.apellido}`
           })
           row.value = tableData.value
         })
@@ -141,7 +119,6 @@ export default defineComponent({
 
     const column = [
       {name:'alumName',label:'Estudiante',field:'hora_llegada'},
-      {name:'alumLastName',label:'Apellido',field:'hora_salida'},
       {name:'alumFsalida',label:'Fecha de Salida',field:'fecha_salida'},
       {name:'alumFLlegada',label:'Fecha de Llegada',field:'fecha_llegada'},
       {name:'alumHSalida',label:'Hora de Salida',field:'hora_salida_firmada'},
@@ -150,35 +127,27 @@ export default defineComponent({
       {name:'alumUsedPermise',label:'lugar',field:'lugar'},
       {name:'alumEstadoPermiso',label:'Estado',field:'estado'},
       {name:'alumUsedPermise',label:'Usado',field:'usado'},
-
     ]
 
     const exportTable = () => {
-        // naive encoding to csv format
-        const content = [column.map(col => wrapCsvValue(col.label))].concat(
-          userPermise.value.map(row => column.map(col => wrapCsvValue(
-            typeof col.field === 'function'
-              ? col.field(row)
-              : row[ col.field === void 0 ? col.name : col.field ],
-            col.format,
-            row
-          )).join(','))
-        ).join('\r\n')
 
-        const status = exportFile(
-          'table-export.csv',
-          content,
-          'text/csv'
-        )
-
-        if (status !== true) {
-          $q.notify({
-            message: 'Browser denied file download...',
-            color: 'negative',
-            icon: 'warning'
-          })
-        }
-      }
+      tableData.value.forEach(element => {
+        userPermise.value.push({
+          'Estudiante':`${element.users.nombre} ${element.users.apellido}`,
+          'Fecha de salida':element.fecha_salida,
+          'Fecha de llegada':element.fecha_llegada,
+          'Hora de salida':element.hora_salida_firmada,
+          'Hora de llegada':element.hora_llegada_firmada,
+          'Tipo de permiso':element.tipo,
+          'Lugar':element.lugar,
+          'Estado':element.estado,
+          'Usado':element.usado,
+        })
+      })
+      const fileName = 'Tabla_Permisos'
+      const exportType = exportXlsFile.types.xls //json, css, html, xml, txt
+      exportXlsFile({data:userPermise.value,fileName, exportType})
+    }
 
     return{
       tab: ref('soli'),
@@ -186,7 +155,8 @@ export default defineComponent({
       column,
       students,
       pendigSoli,
-      exportTable
+      exportTable,
+      getSoliPermises
     }
   }
 })

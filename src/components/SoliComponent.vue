@@ -61,9 +61,10 @@ export default defineComponent({
       required: true,
     }
   },
+  emits:['RecallPermises'],
   setup(){
     const estado = ref()
-    const aceptar = (i) =>{
+    function aceptar(i){
       estado.value = 'aprobado'
       api.patch(`users/students/permises/state/${i}`,{estado:estado.value})
         .then(res => {
@@ -72,9 +73,9 @@ export default defineComponent({
         .catch(err => {
           console.log(err)
         })
-        window.location.reload()
+        this.$emit('RecallPermises',true)
     }
-    const negar = (i) =>{
+    function negar(i){
       estado.value = 'negado'
       api.patch(`users/students/permises/state/${i}`,{estado:estado.value})
         .then(res => {
@@ -83,7 +84,7 @@ export default defineComponent({
         .catch(err => {
           console.log(err)
         })
-        window.location.reload()
+        this.$emit('RecallPermises',true)
     }
 
     return{

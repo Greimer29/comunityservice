@@ -95,7 +95,7 @@ export default defineComponent({
       llegadaFirmed.value = false
       quemar(id)
     }
-    const quemar = (i) =>{
+    function quemar(i) {
       used.value = 'usado'
       api.patch(`users/students/permises/used/${i}`,{used:used.value})
         .then(res => {
