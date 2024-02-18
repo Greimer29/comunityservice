@@ -27,7 +27,7 @@
               no-results-label="No se encontraron coincidencias"
             >
               <template v-slot:top-right>
-                <q-btn label="export" color="primary" icon-right="archive" no-caps @click="exportTable"/>
+                <q-btn label="Export" color="primary" icon-right="archive" no-caps @click="exportTable"/>
               </template>
             </q-table>
           </q-tab-panel>
@@ -48,7 +48,7 @@
             <div v-show="pendigSoli == 0" class="flex flex-center text-bold text-italic">
               <p  class="text-grey-7">...No tiene solicitudes pendientes</p>
             </div>
-            <SoliComponent :soliPending="pendigSoli" />
+            <SoliComponent :soliPending="pendigSoli" @RecallPermises="getSoliPermises"/>
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -57,31 +57,11 @@
 <script>
 import { defineComponent,ref, onMounted } from 'vue'
 import { api } from 'src/boot/axios';
-import { exportFile, useQuasar , date } from 'quasar';
+import {date } from 'quasar';
+import exportXlsFile from 'export-from-json'
 import HistoryComponent from 'src/components/HistoryComponent.vue';
 import SoliComponent from 'src/components/SoliComponent.vue';
 import BadgeComponent from 'src/components/BadgeComponent.vue';
-
-function wrapCsvValue (val, formatFn, row) {
-  let formatted = formatFn !== void 0
-    ? formatFn(val, row)
-    : val
-
-  formatted = formatted === void 0 || formatted === null
-    ? ''
-    : String(formatted)
-
-  formatted = formatted.split('\r').join('\\r')
-  /**
-   * Excel accepts \n and \r in strings, but some other CSV parsers do not
-   * Uncomment the next two lines to escape new lines
-   */
-  // .split('\n').join('\\n')
-  // .split('"').join('""')
-  // .split('\r').join('\\r')
-
-  return `"${formatted}"`
-}
 
 export default defineComponent({
   name: 'MonitorPage',
@@ -92,28 +72,27 @@ export default defineComponent({
   },
   setup(){
     const pendigSoli = ref([])
-    const tableData = ref([])
+    const tableData = ref(['nombre','apellido'])
     const students = ref([])
     const userPermise = ref([])
-    const fSF = ref('')
-    const fLF = ref('')
+    const row = ref([])
 
     setInterval(()=>{
       getStudents()
       getSoliPermises()
+      getHistoryPermises()
     },2000)
     onMounted(()=>{
       getSoliPermises()
-      getHistoryPermises()
       getHistoryPermises()
     })
     const getStudents = () => {
       api.get('users/students')
         .then(res => {
           students.value = res.data
-          console.log(students.value)
         })
     }
+
     const getSoliPermises = () => {
       api.get('users/permises/requests')
         .then(res => {
@@ -124,81 +103,60 @@ export default defineComponent({
           });
         })
     }
+
     const getHistoryPermises = () => {
       api.get('users/permises')
         .then(res => {
           tableData.value = res.data
-          console.log(tableData.value)
-          for (let i = 0; i < tableData.value.length; i++) {
-            const {fecha_salida,fecha_llegada,hora_salida_firmada,hora_llegada_firmada,tipo,estado,usado,lugar} = tableData.value[i]
-            const {nombre,apellido} = tableData.value[i].users
-            fSF.value = date.formatDate(fecha_salida, 'DD-MM-YYYY')
-            fLF.value = date.formatDate(fecha_llegada, 'DD-MM-YYYY')
-
-            const newUserPermise = {
-              nombre:nombre,
-              apellido:apellido,
-              fSalida:fSF,
-              fLlegada:fLF,
-              hSalida:estado=='negado'?'NEGADO' : hora_salida_firmada,
-              hLlegada:estado=='negado'?'NEGADO' : hora_llegada_firmada,
-              tipo:tipo,
-              estado:estado,
-              usado:usado,
-              lugar:lugar
-            }
-            userPermise.value.push(newUserPermise)
-          }
+          tableData.value.forEach(element => {
+            element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
+            element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
+            element.hora_llegada = `${element.users.nombre} ${element.users.apellido}`
+          })
+          row.value = tableData.value
         })
     }
+
     const column = [
-      {name:'alumName',label:'Estudiante',field:'nombre'},
-      {name:'alumLastName',label:'Apellido',field:'apellido'},
-      {name:'alumFsalida',label:'Fecha de Salida',field:'fSalida'},
-      {name:'alumFLlegada',label:'Fecha de Llegada',field:'fLlegada'},
-      {name:'alumHSalida',label:'Hora de Salida',field:'hSalida'},
-      {name:'alumHLlegada',label:'Hora de Llegada',field:'hLlegada'},
+      {name:'alumName',label:'Estudiante',field:'hora_llegada'},
+      {name:'alumFsalida',label:'Fecha de Salida',field:'fecha_salida'},
+      {name:'alumFLlegada',label:'Fecha de Llegada',field:'fecha_llegada'},
+      {name:'alumHSalida',label:'Hora de Salida',field:'hora_salida_firmada'},
+      {name:'alumHLlegada',label:'Hora de Llegada',field:'hora_llegada_firmada'},
       {name:'alumTipoPermiso',label:'tipo de permiso',field:'tipo'},
       {name:'alumUsedPermise',label:'lugar',field:'lugar'},
       {name:'alumEstadoPermiso',label:'Estado',field:'estado'},
       {name:'alumUsedPermise',label:'Usado',field:'usado'},
-
     ]
 
     const exportTable = () => {
-        // naive encoding to csv format
-        const content = [column.map(col => wrapCsvValue(col.label))].concat(
-          userPermise.value.map(row => column.map(col => wrapCsvValue(
-            typeof col.field === 'function'
-              ? col.field(row)
-              : row[ col.field === void 0 ? col.name : col.field ],
-            col.format,
-            row
-          )).join(','))
-        ).join('\r\n')
 
-        const status = exportFile(
-          'table-export.csv',
-          content,
-          'text/csv'
-        )
-
-        if (status !== true) {
-          $q.notify({
-            message: 'Browser denied file download...',
-            color: 'negative',
-            icon: 'warning'
-          })
-        }
-      }
+      tableData.value.forEach(element => {
+        userPermise.value.push({
+          'Estudiante':`${element.users.nombre} ${element.users.apellido}`,
+          'Fecha de salida':element.fecha_salida,
+          'Fecha de llegada':element.fecha_llegada,
+          'Hora de salida':element.hora_salida_firmada,
+          'Hora de llegada':element.hora_llegada_firmada,
+          'Tipo de permiso':element.tipo,
+          'Lugar':element.lugar,
+          'Estado':element.estado,
+          'Usado':element.usado,
+        })
+      })
+      const fileName = 'Tabla_Permisos'
+      const exportType = exportXlsFile.types.xls //json, css, html, xml, txt
+      exportXlsFile({data:userPermise.value,fileName, exportType})
+    }
 
     return{
       tab: ref('soli'),
-      row:userPermise,
+      row,
       column,
       students,
       pendigSoli,
-      exportTable
+      exportTable,
+      getSoliPermises
     }
   }
 })
