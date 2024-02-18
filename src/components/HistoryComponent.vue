@@ -4,6 +4,7 @@
     v-for="(permiso, index) in permiso"
     :key="index"
     rounded
+    dense
   >
     <template v-slot:action >
       <div class="q-pa-xs">
@@ -25,13 +26,13 @@
         <div>{{ user.edad }} años</div>
       </div>
       <q-separator vertical color="grey"/>
-      <div  class="q-px-xs  text-white ">
-        <div>Permiso: {{permiso.tipo}}</div>
+      <div  class="q-px-xs text-white ">
+        <div>Tipo: {{permiso.tipo}}</div>
         <div> {{permiso.fecha_salida}}</div>
         <div>{{permiso.fecha_llegada}}</div>
       </div>
       <q-separator vertical color="grey text-white "/>
-      <div class="q-px-xs" style="max-width: 150px;">
+      <div class="q-px-xs" dense style="max-width: 150px;">
         <div>{{ user.telefono }}</div>
         <div>Salida: {{permiso.hora_salida}}</div>
         <div> Llegada: {{permiso.hora_llegada}}</div>

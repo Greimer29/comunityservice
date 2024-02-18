@@ -21,7 +21,7 @@
           <keep-alive>
       <q-tab-panels   v-model="tab" animated>
         <q-tab-panel name="aprobados" class="q-px-xs">
-          <PermiseComponent :permise="aprovedSoli"/>
+          <PermiseComponent :permise="aprovedSoli" @RecallPermises="getAprovedPermises"/>
         </q-tab-panel>
 
         <q-tab-panel name="negados" class="q-px-xs">
@@ -50,6 +50,8 @@ export default defineComponent({
     const today = date.formatDate(new Date(), 'DD/MM/YYYY')
     const aprovedSoli = ref([])
     const deniedSoli = ref([])
+
+  console.log(process.env.API)
 
     setInterval(()=>{
       getAprovedPermises()
@@ -86,7 +88,8 @@ export default defineComponent({
       tab: ref('aprobados'),
       aprovedSoli,
       deniedSoli,
-      today
+      today,
+      getAprovedPermises
     }
   }
 })

@@ -71,12 +71,13 @@ function wrapCsvValue (val, formatFn, row) {
     ? ''
     : String(formatted)
 
-  formatted = formatted.split('"').join('""')
+  formatted = formatted.split('\r').join('\\r')
   /**
    * Excel accepts \n and \r in strings, but some other CSV parsers do not
    * Uncomment the next two lines to escape new lines
    */
   // .split('\n').join('\\n')
+  // .split('"').join('""')
   // .split('\r').join('\\r')
 
   return `"${formatted}"`
@@ -103,6 +104,7 @@ export default defineComponent({
     },2000)
     onMounted(()=>{
       getSoliPermises()
+      getHistoryPermises()
       getHistoryPermises()
     })
     const getStudents = () => {
