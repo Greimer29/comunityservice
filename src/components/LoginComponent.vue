@@ -105,7 +105,6 @@ setup(){
                 console.log('token is:', currentToken)
                 api.post(`users/register/device/${res.data.user.id}`)
                   .then(res => {
-                    console.log(res.data)
                   })
                 // ...
               } else {
