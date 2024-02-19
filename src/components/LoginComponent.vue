@@ -62,7 +62,6 @@ setup(){
     if((username.value.trim())&&(pass.value.trim())){
       api.post('users/register/login',{email:username.value,password:pass.value})
         .then((res)=>{
-          console.log(res.data.user.type)
 
             if (res.data.user.type == 1) {
               router.replace(`/monitor`)
@@ -73,6 +72,52 @@ setup(){
             }else if (res.data.user.type == 4) {
               router.replace(`/main`)
             }
+
+            $q.localStorage.set("userData",res.data)
+
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+              apiKey: "AIzaSyASaQkUftrTTDp_5PfoQvBoH6SFJUlsgsM",
+              authDomain: "homeplusnotify-f6088.firebaseapp.com",
+              projectId: "homeplusnotify-f6088",
+              storageBucket: "homeplusnotify-f6088.appspot.com",
+              messagingSenderId: "566040100897",
+              appId: "1:566040100897:web:0df17c3c685cd2884c6360",
+              measurementId: "G-ZE97SL1PEE"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            // Get registration token. Initially this makes a network call, once retrieved
+            // subsequent calls to getToken will return from cache.
+            const messaging = getMessaging();
+            onMessage(messaging, (payload) => {
+              console.log('Message received. ', payload);
+              // ...
+            });
+
+            getToken(messaging, { vapidKey: 'BCdquCm3NTt7JvX3zxKFkNGiDQ8ijctXSU3BK3Ke9pTuaALdH34BR-kjxBvVh5NcPSk-z8tMXOAXM6VSSitDYE4' })
+            .then((currentToken) => {
+              if (currentToken) {
+                // Send the token to your server and update the UI if necessary
+                console.log('token is:', currentToken)
+                api.post(`users/register/device/${res.data.user.id}`)
+                  .then(res => {
+                    console.log(res.data)
+                  })
+                // ...
+              } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+                // ...
+              }
+            }).catch((err) => {
+              console.log('An error occurred while retrieving token. ', err);
+              // ...
+            });
+
         })
        .catch((err)=>{
           if(err.code == "ERR_NETWORK"){
