@@ -45,6 +45,8 @@ import { defineComponent, ref } from 'vue'
 import { useQuasar} from 'quasar'
 import {useRouter} from 'vue-router'
 import {api} from 'boot/axios'
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 export default defineComponent({
 name: 'LoginComponent',
@@ -60,13 +62,7 @@ setup(){
     if((username.value.trim())&&(pass.value.trim())){
       api.post('users/register/login',{email:username.value,password:pass.value})
         .then((res)=>{
-          $q.notify({
-              position:'top',
-              color:'positive',
-              message: 'Bienvenido'
-            })
-
-            $q.localStorage.set('userData',res.data)
+          console.log(res.data.user.type)
 
             if (res.data.user.type == 1) {
               router.replace(`/monitor`)
@@ -106,6 +102,11 @@ setup(){
               if (currentToken) {
                 // Send the token to your server and update the UI if necessary
                 console.log('token is:', currentToken)
+                api.post(`users/register/device/${res.data.user.id}`,{tokenDevice:currentToken})
+                  .then(res => {
+                    console.log(res.data)
+                    $q.localStorage.set('userData',res.data)
+                  })
                 // ...
               } else {
                 // Show permission request UI
@@ -132,6 +133,8 @@ setup(){
               message: `Su usuario no ha sido encontrado en nuestra base de datos`
             })
           }
+          console.log(aja.value)
+
         })
     }else{
       $q.notify({

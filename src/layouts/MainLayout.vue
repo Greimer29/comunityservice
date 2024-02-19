@@ -9,7 +9,7 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-          v-show="dataUser.user.type == 4"
+          v-show="dataUser.type == 4"
         />
 
         <q-toolbar-title style="color:rgba(195, 194, 233, 0.685);">
@@ -28,8 +28,8 @@
                 </q-btn>
               </div>
               <div>
-                <div class="q-mb-none q-mr-md q-mt-xs text-bold" style="font-size: medium;">{{ dataUser.user.nombre }} {{ dataUser.user.apellido }}</div>
-                <div>{{ dataUser.user.cedula }}</div>
+                <div class="q-mb-none q-mr-md q-mt-xs text-bold" style="font-size: medium;">{{ dataUser.nombre }} {{ dataUser.apellido }}</div>
+                <div>{{ dataUser.cedula }}</div>
               </div>
             </div>
               <q-menu class="q-mt-xl">
@@ -39,7 +39,7 @@
                 </q-item>
                 <q-separator />
                 <q-item clickable v-close-popup>
-                  <q-item-section @click="goTo(dataUser.user.id)">Cuenta</q-item-section>
+                  <q-item-section @click="goTo(dataUser.id)">Cuenta</q-item-section>
                 </q-item>
                 <q-item clickable v-close-popup>
                   <q-item-section @click="exit"> Salir </q-item-section>
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { defineComponent, ref,onMounted } from 'vue'
+import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
@@ -121,9 +121,9 @@ const linksList = [
     const leftDrawerOpen = ref(false)
     const $q = useQuasar()
     const dataUser = $q.localStorage.getItem('userData')
-    const userAvatar = ref(dataUser.user.foto_url);
-    const router = useRouter()
     console.log(dataUser)
+    const userAvatar = ref(dataUser.foto_url);
+    const router = useRouter()
 
     const goTo = (id) => {
       router.push(`/user/count/${id}`)
