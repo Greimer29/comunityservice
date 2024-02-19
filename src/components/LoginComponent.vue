@@ -45,6 +45,8 @@ import { defineComponent, ref } from 'vue'
 import { useQuasar} from 'quasar'
 import {useRouter} from 'vue-router'
 import {api} from 'boot/axios'
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 export default defineComponent({
 name: 'LoginComponent',
@@ -78,6 +80,46 @@ setup(){
             }else if (res.data.user.type == 4) {
               router.replace(`/main`)
             }
+
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            const firebaseConfig = {
+              apiKey: "AIzaSyASaQkUftrTTDp_5PfoQvBoH6SFJUlsgsM",
+              authDomain: "homeplusnotify-f6088.firebaseapp.com",
+              projectId: "homeplusnotify-f6088",
+              storageBucket: "homeplusnotify-f6088.appspot.com",
+              messagingSenderId: "566040100897",
+              appId: "1:566040100897:web:0df17c3c685cd2884c6360",
+              measurementId: "G-ZE97SL1PEE"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            // Get registration token. Initially this makes a network call, once retrieved
+            // subsequent calls to getToken will return from cache.
+            const messaging = getMessaging();
+            onMessage(messaging, (payload) => {
+              console.log('Message received. ', payload);
+              // ...
+            });
+
+            getToken(messaging, { vapidKey: 'BCdquCm3NTt7JvX3zxKFkNGiDQ8ijctXSU3BK3Ke9pTuaALdH34BR-kjxBvVh5NcPSk-z8tMXOAXM6VSSitDYE4' })
+            .then((currentToken) => {
+              if (currentToken) {
+                // Send the token to your server and update the UI if necessary
+                console.log('token is:', currentToken)
+                // ...
+              } else {
+                // Show permission request UI
+                console.log('No registration token available. Request permission to generate one.');
+                // ...
+              }
+            }).catch((err) => {
+              console.log('An error occurred while retrieving token. ', err);
+              // ...
+            });
+
         })
        .catch((err)=>{
           if(err.code == "ERR_NETWORK"){
