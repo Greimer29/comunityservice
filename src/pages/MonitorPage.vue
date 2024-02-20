@@ -73,12 +73,12 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { api } from "src/boot/axios";
 import { date } from "quasar";
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import exportXlsFile from "export-from-json";
 import HistoryComponent from "src/components/HistoryComponent.vue";
 import SoliComponent from "src/components/SoliComponent.vue";
 import BadgeComponent from "src/components/BadgeComponent.vue";
+import { initializeApp } from "firebase/app";
+import { getMessaging, onMessage } from "firebase/messaging";
 
 export default defineComponent({
   name: "MonitorPage",
@@ -105,25 +105,9 @@ export default defineComponent({
 
     // Get registration token. Initially this makes a network call, once retrieved
     // subsequent calls to getToken will return from cache.
-    const messaging = getMessaging();
+    const messaging = getMessaging(app);
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
-      // ...
-    });
-
-    getToken(messaging, { vapidKey: 'BCdquCm3NTt7JvX3zxKFkNGiDQ8ijctXSU3BK3Ke9pTuaALdH34BR-kjxBvVh5NcPSk-z8tMXOAXM6VSSitDYE4' })
-    .then((currentToken) => {
-      if (currentToken) {
-        // Send the token to your server and update the UI if necessary
-        console.log('token is:', currentToken)
-        // ...
-      } else {
-        // Show permission request UI
-        console.log('No registration token available. Request permission to generate one.');
-        // ...
-      }
-    }).catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
       // ...
     });
 

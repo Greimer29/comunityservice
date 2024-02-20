@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { defineComponent, ref,onMounted } from 'vue'
+import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
@@ -123,7 +123,6 @@ const linksList = [
     const dataUser = $q.localStorage.getItem('userData')
     const userAvatar = ref(dataUser.user.foto_url);
     const router = useRouter()
-    console.log(dataUser)
 
     const goTo = (id) => {
       router.push(`/user/count/${id}`)
