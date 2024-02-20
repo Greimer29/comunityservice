@@ -93,7 +93,7 @@ export default defineComponent({
                   type: 'positive',
                   message: 'Solicitud de permiso enviado con exito'
                 })
-                router.replace('/students')
+                //router.replace('/students')
               })
               .catch(err => {
                 $q.notify({
@@ -125,6 +125,9 @@ export default defineComponent({
                   type: 'positive',
                   message: 'Solicitud de permiso enviado con exito'
                 })
+
+
+
                 router.replace('/students')
               })
               .catch(err => {

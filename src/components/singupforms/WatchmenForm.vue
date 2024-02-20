@@ -39,6 +39,7 @@
 import { defineComponent, ref } from 'vue';
 import {api} from 'src/boot/axios.js'
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name:'WatchmenForm',
@@ -49,6 +50,7 @@ export default defineComponent({
     const selectedFile = ref();
     const cod = ref('')
     const $q = useQuasar()
+    const router = useRouter()
 
     const user = ref({
       name:'',

@@ -103,8 +103,9 @@ setup(){
               if (currentToken) {
                 // Send the token to your server and update the UI if necessary
                 console.log('token is:', currentToken)
-                api.post(`users/register/device/${res.data.user.id}`)
+                api.post(`users/register/device/${res.data.user.id}`,{tokenDevice:currentToken})
                   .then(res => {
+                    console.log(res.data)
                   })
                 // ...
               } else {

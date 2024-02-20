@@ -52,8 +52,6 @@ export default defineComponent({
     const aprovedSoli = ref([])
     const deniedSoli = ref([])
 
-  console.log(process.env.API)
-
     setInterval(()=>{
       getAprovedPermises()
       getDeniedPermises()
