@@ -77,8 +77,6 @@ import exportXlsFile from "export-from-json";
 import HistoryComponent from "src/components/HistoryComponent.vue";
 import SoliComponent from "src/components/SoliComponent.vue";
 import BadgeComponent from "src/components/BadgeComponent.vue";
-import { initializeApp } from "firebase/app";
-import { getMessaging, onMessage } from "firebase/messaging";
 
 export default defineComponent({
   name: "MonitorPage",
@@ -88,7 +86,7 @@ export default defineComponent({
     SoliComponent,
   },
   setup() {
-    // Your web app's Firebase configuration
+   /* // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyASaQkUftrTTDp_5PfoQvBoH6SFJUlsgsM",
@@ -110,7 +108,7 @@ export default defineComponent({
       console.log('Message received. ', payload);
       // ...
     });
-
+*/
     const pendigSoli = ref([]);
     const tableData = ref(["nombre", "apellido"]);
     const students = ref([]);

@@ -132,7 +132,6 @@ setup(){
               message: `Su usuario no ha sido encontrado en nuestra base de datos`
             })
           }
-          console.log(aja.value)
 
         })
     }else{
