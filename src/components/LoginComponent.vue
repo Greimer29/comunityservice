@@ -87,8 +87,10 @@ setup(){
               measurementId: "G-ZE97SL1PEE"
             };
 
+            const appName = 'SecondApp'
+
             // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
+            const app = initializeApp(firebaseConfig,appName);
 
             // Get registration token. Initially this makes a network call, once retrieved
             // subsequent calls to getToken will return from cache.
