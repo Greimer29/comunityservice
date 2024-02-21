@@ -21,6 +21,7 @@ import { Notify } from 'quasar'
     const messaging = getMessaging(app);
     onMessage(messaging, (payload) => {
       console.log('Message received. ', payload);
+      console.log(Notify)
       Notify.create({
         position:'top',
         message: `${payload.notification.title}: ${payload.notification.body}`

@@ -103,6 +103,7 @@ export default defineComponent({
       getSoliPermises();
       getHistoryPermises();
     });
+
     const getStudents = () => {
       api.get("users/students").then((res) => {
         students.value = res.data;
