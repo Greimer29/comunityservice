@@ -107,7 +107,9 @@ export default defineComponent({
     };
 
     // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      initializeApp(firebaseConfig);
+    }
 
     const messaging = getMessaging();
     onMessage(messaging, (payload) => {
