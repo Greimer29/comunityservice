@@ -1,6 +1,14 @@
 <template>
   <div class="q-gutter-md text-center" v-show="!show">
-    <q-input v-model="cod" label="Codigo de Preceptor"/>
+    <q-input v-model="cod" label="Codigo de Preceptor" :type="isPwd ? 'password' : 'text'">
+      <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+    </q-input>
     <q-btn label="verificar codigo" color="primary" @click="enviar"/>
   </div>
   <div class="q-pa-md" v-show="show">
