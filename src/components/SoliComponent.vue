@@ -5,7 +5,6 @@
     :key="index"
     rounded
   >
-  {{ console.log(soli) }}
     <template v-slot:action >
       <div class="q-pa-xs">
         <q-avatar >
@@ -68,10 +67,10 @@ export default defineComponent({
       estado.value = 'aprobado'
       api.patch(`users/students/permises/state/${i}`,{estado:estado.value})
         .then(res => {
-          console.log(res)
+          //console.log(res)
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
         this.$emit('RecallPermises',true)
     }

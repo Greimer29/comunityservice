@@ -133,7 +133,7 @@ export default defineComponent({
                   color:'positive'
                 })
                 api
-                  .post(`users/upload/image/${res.data.newUser.id}`, formData)
+                  .post(`users/upload/image/${res.data.id}`, formData)
                   .then((res) => {
                     console.log(res.data);
                   })

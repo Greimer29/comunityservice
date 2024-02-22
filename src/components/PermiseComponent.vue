@@ -43,7 +43,6 @@
           <q-btn v-show="soli.hora_salida_firmada == null " label="Confirmar salida" color="positive" @click="confiramarSalida(soli.id)" :key="soli.id"/>
           <q-btn v-show="soli.hora_salida_firmada != null " label="Confirmar entrada" color="positive" @click="confirmarLlegada(soli.id)" :key="soli.id"/>
         </div>
-  {{console.log(soli)}}
       </div>
     </template>
   </q-banner>

@@ -78,8 +78,6 @@ import exportXlsFile from "export-from-json";
 import HistoryComponent from "src/components/HistoryComponent.vue";
 import SoliComponent from "src/components/SoliComponent.vue";
 import BadgeComponent from "src/components/BadgeComponent.vue";
-import { initializeApp } from "firebase/app";
-import { getMessaging, onMessage } from "firebase/messaging";
 
 export default defineComponent({
   name: "MonitorPage",
@@ -94,33 +92,6 @@ export default defineComponent({
     const students = ref([]);
     const userPermise = ref([]);
     const row = ref([]);
-    const $q = useQuasar()
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyASaQkUftrTTDp_5PfoQvBoH6SFJUlsgsM",
-      authDomain: "homeplusnotify-f6088.firebaseapp.com",
-      projectId: "homeplusnotify-f6088",
-      storageBucket: "homeplusnotify-f6088.appspot.com",
-      messagingSenderId: "566040100897",
-      appId: "1:566040100897:web:0df17c3c685cd2884c6360",
-      measurementId: "G-ZE97SL1PEE"
-    };
-
-    // Initialize Firebase
-    if (!firebase.apps.length) {
-      initializeApp(firebaseConfig);
-    }
-
-    const messaging = getMessaging();
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      $q.notify({
-        position:'top',
-        type: 'primary',
-        message: `${payload.notification.title}: ${payload.notification.body}`
-      })
-      // ...
-    });
 
     setInterval(() => {
       getStudents();
@@ -131,6 +102,7 @@ export default defineComponent({
       getSoliPermises();
       getHistoryPermises();
     });
+
     const getStudents = () => {
       api.get("users/students").then((res) => {
         students.value = res.data;
