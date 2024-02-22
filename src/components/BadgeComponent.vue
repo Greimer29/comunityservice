@@ -6,7 +6,7 @@
         v-for="(student,index) in students" :key="index"
         class="q-pa-md"
         style="min-width: 100%;"
-      >{{ console.log(student) }}
+      >
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
