@@ -67,6 +67,7 @@ export default defineComponent({
     const salidaFirmed = ref(true)
     const llegadaFirmed = ref(false)
 
+
     function confiramarSalida(id){
       const timeExit = Date.now()
       const formattedTime = date.formatDate(timeExit, 'HH:mm')
@@ -93,6 +94,7 @@ export default defineComponent({
       salidaFirmed.value = false
       llegadaFirmed.value = false
       quemar(id)
+        this.$emit('RecallPermises',true)
     }
     function quemar(i) {
       used.value = 'usado'
@@ -103,7 +105,6 @@ export default defineComponent({
         .catch(err => {
           console.log(err)
         })
-        this.$emit('RecallPermises',true)
     }
 
     return{
