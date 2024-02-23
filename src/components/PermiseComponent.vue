@@ -67,6 +67,7 @@ export default defineComponent({
     const salidaFirmed = ref(true)
     const llegadaFirmed = ref(false)
 
+    console.log('switch es mejor que checkout')
 
     function confiramarSalida(id){
       const timeExit = Date.now()
