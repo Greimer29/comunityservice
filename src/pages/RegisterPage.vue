@@ -9,7 +9,7 @@
       <q-tabs v-model="tab">
         <q-tab name="student" label="Estudiante"/>
         <q-tab name="watchmen" label="Seguridad"/>
-        <q-tab name="monitor" label="Monitor"/>
+        <q-tab name="monitor" label="Preceptor"/>
       </q-tabs>
       <q-separator></q-separator>
       <q-tab-panels v-model="tab">
@@ -21,7 +21,7 @@
           <WatchmenForm/>
         </q-tab-panel>
 
-        <q-tab-panel name="monitor" label="Monitor">
+        <q-tab-panel name="monitor" label="Preceptor">
           <MonitorForm/>
         </q-tab-panel>
       </q-tab-panels>
@@ -30,9 +30,6 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue';
-import {api} from 'boot/axios'
-import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
 import StudentForm from 'src/components/singupforms/StudentForm.vue'
 import MonitorForm from 'src/components/singupforms/MonitorForm.vue'
 import WatchmenForm from 'src/components/singupforms/WatchmenForm.vue';
