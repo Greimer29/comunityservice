@@ -22,7 +22,7 @@
               <div class="flex flex-center q-gutter-xs">
               <div>
                 <q-btn round color="white">
-                  <q-avatar size="50px">
+                  <q-avatar class="q-ma-xs" size="50px" font-size="52px">
                     <img :src="`https://homeplus.iunav.edu.ve/avatar/${userAvatar}`" />
                   </q-avatar>
                 </q-btn>
@@ -136,13 +136,11 @@ const linksList = [
     }
 
     onMounted(async()=>{
-
       await PushNotifications.addListener('pushNotificationReceived', notification => {
         console.log('Push notification received: ', notification);
         $q.notify({
           message:`${notification}`
         })
-        alert('It works')
       });
     })
 

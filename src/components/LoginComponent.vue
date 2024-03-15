@@ -120,8 +120,6 @@ export default defineComponent({
               PushNotifications.register()
               FCM.getToken()
               .then(r => {
-                alert(`Token is: ${r.token}`)
-
                 api.post(`users/register/device/${res.data.user.id}`, {
                   tokenDevice: r.token,
                 })
