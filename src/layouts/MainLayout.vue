@@ -34,13 +34,13 @@
             </div>
               <q-menu class="q-mt-xl">
               <q-list style="min-width: 120px">
-                <q-item clickable v-close-popup>
+                <!-- <q-item clickable v-close-popup>
                   <q-item-section>Ajustes</q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item clickable v-close-popup>
                   <q-item-section @click="goTo(dataUser.user.id)">Cuenta</q-item-section>
-                </q-item>
+                </q-item> -->
                 <q-item clickable v-close-popup>
                   <q-item-section @click="exit"> Salir </q-item-section>
                 </q-item>

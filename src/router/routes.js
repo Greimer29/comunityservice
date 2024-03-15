@@ -19,7 +19,6 @@ const routes = [{
             { path: '/monitor', component: () =>
                     import ('pages/MonitorPage.vue') },
             //{path: '/user/count/:id', component: () => import('pages/UserPage.vue')}
-
         ]
     },
 

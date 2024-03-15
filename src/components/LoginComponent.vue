@@ -178,10 +178,6 @@ a {
   color: black;
 }
 
-body{
-  background-color: red;
-}
-
 a:hover {
   color: rgb(122, 122, 192);
 }
