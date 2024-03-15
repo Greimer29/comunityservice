@@ -72,10 +72,6 @@ export default defineComponent({
         })
       });
 
-      await PushNotifications.addListener('pushNotificationReceived', notification => {
-        console.log('Push notification received: ', notification);
-      });
-
       await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
         console.log('Push notification action performed', notification.actionId, notification.inputValue);
       });
@@ -176,10 +172,6 @@ p,
 a {
   text-align: center;
   color: black;
-}
-
-body{
-  background-color: red;
 }
 
 a:hover {

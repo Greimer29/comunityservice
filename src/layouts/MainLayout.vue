@@ -88,6 +88,8 @@ import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { PushNotifications } from '@capacitor/push-notifications'
 
 const linksList = [
   {
@@ -132,6 +134,17 @@ const linksList = [
       router.replace('/')
       $q.localStorage.remove('userData')
     }
+
+    onMounted(async()=>{
+
+      await PushNotifications.addListener('pushNotificationReceived', notification => {
+        console.log('Push notification received: ', notification);
+        $q.notify({
+          message:`${notification}`
+        })
+        alert('It works')
+      });
+    })
 
     return {
       essentialLinks: linksList,
