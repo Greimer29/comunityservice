@@ -35,8 +35,8 @@ export default defineComponent({
           .then(res => {
             data.value = res.data
             data.value.forEach(element => {
-              element.fecha_salida = date.formatDate(element.fecha_salida, 'DD-MM-YYYY')
-              element.fecha_llegada = date.formatDate(element.fecha_llegada, 'DD-MM-YYYY')
+              element.fecha_salida = date.formatDate(date.addToDate(element.fecha_salida, { days: 1 }),'YYYY-MM-DD')
+              element.fecha_llegada = date.formatDate(date.addToDate(element.fecha_llegada, { days: 1 }),'YYYY-MM-DD')
             })
           });
       }

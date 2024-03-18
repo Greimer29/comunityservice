@@ -88,6 +88,7 @@ export default defineComponent({
               }
             })
               .then(res => {
+                console.log(res.data)
                 $q.notify({
                   position:'top',
                   type: 'positive',
@@ -120,13 +121,12 @@ export default defineComponent({
               }
             })
               .then(res => {
+                console.log(res.data)
                 $q.notify({
                   position:'top',
                   type: 'positive',
                   message: 'Solicitud de permiso enviado con exito'
                 })
-
-
 
                 router.replace('/students')
               })

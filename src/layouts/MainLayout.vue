@@ -22,7 +22,7 @@
               <div class="flex flex-center q-gutter-xs">
               <div>
                 <q-btn round color="white">
-                  <q-avatar class="q-ma-xs" size="50px" font-size="52px">
+                  <q-avatar class="q-ma-xs" size="50px" font-size="60px">
                     <img :src="`https://homeplus.iunav.edu.ve/avatar/${userAvatar}`" />
                   </q-avatar>
                 </q-btn>
