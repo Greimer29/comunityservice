@@ -113,14 +113,8 @@ export default defineComponent({
       api.get("users/permises/requests").then((res) => {
         pendigSoli.value = res.data;
         pendigSoli.value.forEach((element) => {
-          element.fecha_salida = date.formatDate(
-            element.fecha_salida,
-            "DD-MM-YYYY"
-          );
-          element.fecha_llegada = date.formatDate(
-            element.fecha_llegada,
-            "DD-MM-YYYY"
-          );
+          element.fecha_salida = date.formatDate(date.addToDate(element.fecha_salida, { days: 1 }),'YYYY-MM-DD')
+          element.fecha_llegada = date.formatDate(date.addToDate(element.fecha_llegada, { days: 1 }),'YYYY-MM-DD')
         });
       });
     };
@@ -129,14 +123,8 @@ export default defineComponent({
       api.get("users/permises").then((res) => {
         tableData.value = res.data;
         tableData.value.forEach((element) => {
-          element.fecha_salida = date.formatDate(
-            element.fecha_salida,
-            "DD-MM-YYYY"
-          );
-          element.fecha_llegada = date.formatDate(
-            element.fecha_llegada,
-            "DD-MM-YYYY"
-          );
+          element.fecha_salida = date.formatDate(date.addToDate(element.fecha_salida, { days: 1 }),'YYYY-MM-DD')
+          element.fecha_llegada = date.formatDate(date.addToDate(element.fecha_llegada, { days: 1 }),'YYYY-MM-DD')
           element.hora_llegada = `${element.users.nombre} ${element.users.apellido}`;
         });
         row.value = tableData.value;
