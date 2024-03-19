@@ -139,7 +139,8 @@ const linksList = [
       await PushNotifications.addListener('pushNotificationReceived', notification => {
         console.log('Push notification received: ', notification);
         $q.notify({
-          message:`${notification}`
+          icon:`homeplus.png`,
+          message:`${notification.title}: ${notification.body}`
         })
       });
     })
