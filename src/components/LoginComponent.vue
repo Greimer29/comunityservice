@@ -32,6 +32,13 @@
       <p><router-link to="register" color="white">Registrate</router-link></p>
     </div>
   </form>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 
 <script>
@@ -52,6 +59,7 @@ export default defineComponent({
     const router = useRouter();
     const username = ref("");
     const pass = ref("");
+    const visible = ref(false)
 
     const addListeners = async () => {
       await PushNotifications.addListener('registration', token => {
@@ -98,12 +106,14 @@ export default defineComponent({
 
     const verificar = () => {
       if (username.value.trim() && pass.value.trim()) {
+        visible.value = true
         api
           .post("users/register/login", {
             email: username.value,
             password: pass.value,
           })
           .then((res) => {
+            visible.value = false
             if (res.data.user.type == 1) {
               router.replace(`/monitor`);
             } else if (res.data.user.type == 2) {
@@ -132,6 +142,7 @@ export default defineComponent({
               })
           })
           .catch((err) => {
+            visible.value = false
             if (err.code == "ERR_NETWORK") {
               $q.notify({
                 color: "negative",
@@ -156,6 +167,7 @@ export default defineComponent({
     };
 
     return {
+      visible,
       remem: ref(false),
       isPwd: ref(true),
       username,
