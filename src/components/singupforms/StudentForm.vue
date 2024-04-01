@@ -38,6 +38,13 @@
       <q-btn  label="REGISTRAR" color="positive" @click="registrar(user)"/>
     </q-form>
   </div>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 <script>
 import { defineComponent,ref } from 'vue';
@@ -54,6 +61,7 @@ export default defineComponent({
     const selectedFile = ref();
     const carrerOp = ['Informática',"Administración de Empresas","Administración de Personal","Preescolar","Teología"]
     const semesterOp = ['1ero',"2do","3ero","4to","5to","6to","7mo","8vo","9no"]
+    const visible = ref(false)
     const user = ref({
       name:'',
       lastName:'',
@@ -95,10 +103,13 @@ export default defineComponent({
               const formData = new FormData();
               formData.append("image", selectedFile.value);
 
+              visible.value = true
+
               api.post('users/register',{
                 user:user.value
               })
               .then(res => {
+                visible.value = false
                 console.log(res.data)
                 $q.notify({
                   position:'top',
@@ -117,6 +128,7 @@ export default defineComponent({
                 router.replace(`/`)
               })
               .catch((err)=>{
+                visible.value = false
                 console.log(err)
                 if(err.code == "ERR_NETWORK"){
                   $q.notify({
@@ -149,6 +161,7 @@ export default defineComponent({
     }
 
     return {
+      visible,
       selectedFile,
       isPwd: ref(true),
       isRpwd: ref(true),

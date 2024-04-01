@@ -11,6 +11,13 @@
     </q-input>
     <q-btn label="verificar codigo" color="primary" @click="enviar"/>
   </div>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
   <div class="q-pa-md" v-show="show">
     <q-form class="q-gutter-md text-center">
       <q-file type="file" filled v-model="selectedFile" label="Seleccionar imagen de usuario">
@@ -59,6 +66,7 @@ export default defineComponent({
     const cod = ref('')
     const $q = useQuasar()
     const router = useRouter()
+    const visible = ref(false)
 
     const user = ref({
       name:'',
@@ -70,10 +78,13 @@ export default defineComponent({
 
     const enviar = () => {
       if(cod.value.trim()){
+        visible.value = true
+
       api.post('user/validation',{
         cod:cod.value,typeUser:2
       })
       .then(res => {
+        visible.value = false
         const {validation} = res.data
         if(validation){
           $q.notify({
@@ -87,14 +98,13 @@ export default defineComponent({
         }
       })
       .catch(err => {
+        visible.value = false
         console.log(err)
-        if(err.code == "ERR_NETWORK"){
           $q.notify({
             color:'negative',
             position:'bottom',
-            message:'Eror de conexión'
+            message:`${err.code}`
           })
-        }
         if(err.response.status == 502){
           $q.notify({
             color:'negative',
@@ -127,6 +137,8 @@ export default defineComponent({
             })
           }else{
             if (selectedFile.value != null) {
+              visible.value = true
+
               const formData = new FormData();
               formData.append("image", selectedFile.value);
 
@@ -134,6 +146,7 @@ export default defineComponent({
                 user:user.value
               })
               .then(res => {
+                visible.value = false
                 console.log(res.data)
                 $q.notify({
                   position:'top',
@@ -152,20 +165,13 @@ export default defineComponent({
                 router.replace(`/`)
               })
               .catch((err)=>{
+                visible.value = false
                 console.log(err)
-                if(err.code == "ERR_NETWORK"){
-                  $q.notify({
-                    color:'negative',
-                    position:'bottom',
-                    message:'Eror de conexión'
-                  })
-                }else{
-                  $q.notify({
-                    color:'negative',
-                    position:'bottom',
-                    message:'Lo sentimos ocurrio un error con el servidor'
-                  })
-                }
+                $q.notify({
+                  color:'negative',
+                  position:'bottom',
+                  message:`${err.code}`
+                })
               })
             } else {
               $q.notify({
@@ -183,6 +189,7 @@ export default defineComponent({
     }
 
     return {
+      visible,
       selectedFile,
       show,
       user,
