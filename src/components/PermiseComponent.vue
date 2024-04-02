@@ -46,6 +46,13 @@
       </div>
     </template>
   </q-banner>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 
 <script>
@@ -66,10 +73,10 @@ export default defineComponent({
     const used = ref()
     const salidaFirmed = ref(true)
     const llegadaFirmed = ref(false)
-
-    console.log('switch es mejor que checkout')
+    const visible = ref(false)
 
     function confiramarSalida(id){
+      visible.value = true
       const timeExit = Date.now()
       const formattedTime = date.formatDate(timeExit, 'HH:mm')
       api.patch(`users/students/permises/confirmed/${id}`,{
@@ -81,8 +88,10 @@ export default defineComponent({
       })
       salidaFirmed.value = false
       llegadaFirmed.value = true
+      visible.value = false
     }
     function confirmarLlegada(id){
+      visible.value = true
       const timeArrived = Date.now()
       const formattedTime = date.formatDate(timeArrived, 'HH:mm')
       api.patch(`users/students/permises/confirmed/${id}`,{
@@ -90,6 +99,7 @@ export default defineComponent({
         llegadaFirmed:formattedTime
       })
       .then(res => {
+        visible.value = false
         console.log(res.data)
       })
       salidaFirmed.value = false
@@ -109,6 +119,7 @@ export default defineComponent({
     }
 
     return{
+      visible,
       llegadaFirmed,
       salidaFirmed,
       quemar,

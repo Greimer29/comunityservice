@@ -1,37 +1,4 @@
 <template>
-  <form class="q-gutter-md" style="
-      padding: 15px;
-      text-align: center;
-      min-width: 75%;
-      height: 80%;
-      background-image: linear-gradient(#dbd7d777, #55535377);
-      border-radius: 30px;
-    ">
-    <div>
-      <img alt="Quasar logo" src="homeplus.png" style="max-width: 150px; max-height: 150px" />
-    </div>
-    <div class="q-gutter-md" style="margin: 30px; padding: 0px; max-width: 300px; text-align: center">
-      <q-input v-model="username" type="email" filled label="Email" />
-      <q-input v-model="pass" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
-        <template v-slot:append>
-          <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
-        </template>
-      </q-input>
-    </div>
-
-    <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin: 5px">
-      <q-checkbox label="Recuerdame" v-model="remem" />
-      <p>
-        <router-link to="user/forget" color="white">Has olvidado tu <br />
-          contrasena</router-link>
-      </p>
-    </div>
-    <q-btn style="width: 50%" label="Ingresar" color="grey-9" @click="verificar()" />
-    <div class="flex flex-center q-gutter-md">
-      <p>¿No tienes cuenta?</p>
-      <p><router-link to="register" color="white">Registrate</router-link></p>
-    </div>
-  </form>
   <q-inner-loading
     style="display: flex; position: fixed;"
     :showing="visible"
@@ -39,6 +6,43 @@
     label-class="text-teal"
     label-style="font-size: 1.1em"
   />
+  <div class="q-pa-md">
+    <form class="" style="
+        padding: 15px;
+        text-align: center;
+        min-width: 80%;
+        height: 80%;
+        background-image: linear-gradient(#dbd7d777, #55535377);
+        border-radius: 30px;
+      ">
+      <div class="q-gutter-md">
+        <div>
+          <img alt="Quasar logo" src="homeplus.png" style="max-width: 150px; max-height: 150px" />
+        </div>
+        <div class="q-gutter-md" style="margin: 30px; padding: 0px; max-width: 300px; text-align: center">
+          <q-input v-model="username" type="email" filled label="Email" />
+          <q-input v-model="pass" filled :type="isPwd ? 'password' : 'text'" label="Contraseña">
+            <template v-slot:append>
+              <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
+            </template>
+          </q-input>
+        </div>
+
+        <div class="flex flex-center q-pa-md" style="justify-content: space-around; margin: 5px">
+          <q-checkbox label="Recuerdame" v-model="remem" />
+          <p>
+            <router-link to="user/forget" color="white">Has olvidado tu <br />
+              contrasena</router-link>
+          </p>
+        </div>
+        <q-btn style="width: 50%" label="Ingresar" color="grey-9" @click="verificar()" />
+        <div class="flex flex-center q-gutter-md">
+          <p>¿No tienes cuenta?</p>
+          <p><router-link to="register" color="white">Registrate</router-link></p>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>

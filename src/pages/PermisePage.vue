@@ -45,6 +45,13 @@
       @click="Solicitar"
     />
   </div>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 
 <script>
@@ -56,6 +63,7 @@ import { api } from 'src/boot/axios'
 export default defineComponent({
   name:'PermisePage',
   setup () {
+    const visible = ref(false)
     const $q = useQuasar()
     const data = $q.localStorage.getItem('userData')
     const router = useRouter()
@@ -81,13 +89,15 @@ export default defineComponent({
               message: 'La hora de salida no puede ser inferior a la hora de llegada'
             })
           }else{
-          const {state,dateS,timeL,timeS,motive,place,type} = permission.value
+            visible.value = true
+            const {state,dateS,timeL,timeS,motive,place,type} = permission.value
             api.post('users/permises',{dateL:permission.value.dateS,dateS,timeL,timeS,motive,place,type,state:'pendiente',used:'no usado'},{
               headers:{
                 'Authorization':`bearer ${token2}`
               }
             })
               .then(res => {
+                visible.value = false
                 console.log(res.data)
                 $q.notify({
                   position:'top',
@@ -97,6 +107,7 @@ export default defineComponent({
                 router.replace('/students')
               })
               .catch(err => {
+                visible.value = false
                 $q.notify({
                   position:'bottom',
                   type: 'negative',
@@ -114,6 +125,8 @@ export default defineComponent({
           }
       }else if(permission.value.type == 'finDe'){
         if(permission.value.dateS.trim() && permission.value.dateL.trim() && permission.value.timeS.trim() && permission.value.timeL.trim() && permission.value.place.trim() && permission.value.motive.trim()){
+
+            visible.value = true
             const {dateL,dateS,timeL,timeS,motive,place,type} = permission.value
             api.post('users/permises',{dateL,dateS,timeL,timeS,motive,place,type,state:'pendiente',used:'no usado'},{
               headers:{
@@ -121,6 +134,7 @@ export default defineComponent({
               }
             })
               .then(res => {
+                visible.value = false
                 console.log(res.data)
                 $q.notify({
                   position:'top',
@@ -131,6 +145,7 @@ export default defineComponent({
                 router.replace('/students')
               })
               .catch(err => {
+                visible.value = false
                 $q.notify({
                   position:'bottom',
                   type: 'negative',
@@ -155,6 +170,7 @@ export default defineComponent({
     }
 
     return {
+      visible,
       permission,
       Solicitar
     }

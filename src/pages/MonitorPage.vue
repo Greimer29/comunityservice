@@ -78,6 +78,8 @@ import exportXlsFile from "export-from-json";
 import HistoryComponent from "src/components/HistoryComponent.vue";
 import SoliComponent from "src/components/SoliComponent.vue";
 import BadgeComponent from "src/components/BadgeComponent.vue";
+import { Filesystem, Directory, Encoding   } from '@capacitor/filesystem'
+import * as XLSX from 'xlsx'
 
 export default defineComponent({
   name: "MonitorPage",
@@ -155,7 +157,34 @@ export default defineComponent({
       { name: "alumUsedPermise", label: "Usado", field: "usado" },
     ];
 
-    const exportTable = () => {
+    const exportTable = async () => {
+      try {
+        // Crear la carpeta "secrets" en el directorio "Documents"
+        await Filesystem.mkdir({
+          directory: Directory.Documents,
+          path: "secrets",
+        });
+        console.log("Carpeta 'secrets' creada con éxito");
+      } catch (error) {
+        console.log("Error al crear la carpeta:", error);
+      }
+
+      try {
+        await Filesystem.mkdir()
+        await Filesystem.writeFile({
+          path: 'secrets/text.txt',
+          data: 'This is a test',
+          directory: Directory.Documents,
+          encoding: Encoding.UTF8,
+        });
+        alert("Archivo guardado con éxito");
+      } catch (error) {
+        console.log(error);
+        alert(`Error al guardar el archivo: ${error}`);
+      }
+
+        return alert('Done')
+
       tableData.value.forEach((element) => {
         userPermise.value.push({
           Estudiante: `${element.users.nombre} ${element.users.apellido}`,
@@ -169,9 +198,6 @@ export default defineComponent({
           Usado: element.usado,
         });
       });
-      const fileName = "Tabla_Permisos";
-      const exportType = exportXlsFile.types.xls; //json, css, html, xml, txt
-      exportXlsFile({ data: userPermise.value, fileName, exportType });
     };
 
     return {

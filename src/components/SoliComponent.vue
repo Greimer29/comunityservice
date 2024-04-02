@@ -46,6 +46,13 @@
       </div>
     </template>
   </q-banner>
+  <q-inner-loading
+    style="display: flex; position: fixed;"
+    :showing="visible"
+    label="Please wait..."
+    label-class="text-teal"
+    label-style="font-size: 1.1em"
+  />
 </template>
 
 <script>
@@ -63,30 +70,41 @@ export default defineComponent({
   emits:['RecallPermises'],
   setup(){
     const estado = ref()
+    const visible = ref(false)
+
     function aceptar(i){
+      visible.value = true
+
       estado.value = 'aprobado'
       api.patch(`users/students/permises/state/${i}`,{estado:estado.value})
         .then(res => {
-          //console.log(res)
+          visible.value = false
+          console.log(res)
         })
         .catch(err => {
-          //console.log(err)
+          visible.value = false
+          console.log(err)
         })
         this.$emit('RecallPermises',true)
     }
     function negar(i){
+      visible.value = true
+
       estado.value = 'negado'
       api.patch(`users/students/permises/state/${i}`,{estado:estado.value})
         .then(res => {
+          visible.value = false
           console.log(res)
         })
         .catch(err => {
+          visible.value = false
           console.log(err)
         })
         this.$emit('RecallPermises',true)
     }
 
     return{
+      visible,
       aceptar,
       negar
     }
