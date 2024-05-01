@@ -17,6 +17,7 @@
     "@capacitor/push-notifications": "^5.1.1",
     "@quasar/extras": "^1.16.4",
     "axios": "^1.6.1",
+    "capacitor-blob-writer": "^1.1.16",
     "date-fns": "^3.6.0",
     "export-from-json": "^1.7.4",
     "firebase": "^10.8.0",

@@ -74,12 +74,12 @@ import { defineComponent, ref, onMounted } from "vue";
 import { useQuasar} from 'quasar'
 import { api } from "src/boot/axios";
 import { date } from "quasar";
-import exportXlsFile from "export-from-json";
 import HistoryComponent from "src/components/HistoryComponent.vue";
 import SoliComponent from "src/components/SoliComponent.vue";
 import BadgeComponent from "src/components/BadgeComponent.vue";
-import { Filesystem, Directory, Encoding   } from '@capacitor/filesystem'
+import { Directory   } from '@capacitor/filesystem'
 import * as XLSX from 'xlsx'
+import write_blob from "capacitor-blob-writer";
 
 export default defineComponent({
   name: "MonitorPage",
@@ -158,32 +158,6 @@ export default defineComponent({
     ];
 
     const exportTable = async () => {
-      try {
-        // Crear la carpeta "secrets" en el directorio "Documents"
-        await Filesystem.mkdir({
-          directory: Directory.Documents,
-          path: "secrets",
-        });
-        console.log("Carpeta 'secrets' creada con éxito");
-      } catch (error) {
-        console.log("Error al crear la carpeta:", error);
-      }
-
-      try {
-        await Filesystem.mkdir()
-        await Filesystem.writeFile({
-          path: 'secrets/text.txt',
-          data: 'This is a test',
-          directory: Directory.Documents,
-          encoding: Encoding.UTF8,
-        });
-        alert("Archivo guardado con éxito");
-      } catch (error) {
-        console.log(error);
-        alert(`Error al guardar el archivo: ${error}`);
-      }
-
-        return alert('Done')
 
       tableData.value.forEach((element) => {
         userPermise.value.push({
@@ -198,7 +172,46 @@ export default defineComponent({
           Usado: element.usado,
         });
       });
+
+      exportToExcel(userPermise.value,'Tabla-de-permisos')
     };
+
+    async function exportToExcel(data, fileName) {
+      const EXCEL_TYPE =
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+
+      // Convertimos los datos en un libro de Excel (Workbook)
+      const ws = XLSX.utils.json_to_sheet(data);
+
+      // Convertimos el libro de Excel a un blob
+      // eslint-disable-next-line
+      const workbook = { Sheets: { data: ws }, SheetNames: ["data"] };
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      const excelData = new Blob([excelBuffer], {
+        type: EXCEL_TYPE,
+      });
+
+      try {
+        // Guardamos el blob en el sistema de archivos del dispositivo móvil
+        write_blob({
+          path: `${fileName}.xlsx`,
+          directory: Directory.Documents,
+          blob: excelData,
+        })
+          .then(function (x) {
+            window.alert("Data saved to Documents");
+          })
+          .catch(function (e) {
+            window.alert(e);
+          });
+      } catch (error) {
+        alert(error);
+      }
+    }
 
     return {
       tab: ref("soli"),
