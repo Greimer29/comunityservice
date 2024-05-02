@@ -89,11 +89,14 @@ export default defineComponent({
     SoliComponent,
   },
   setup() {
+    const $q = useQuasar()
     const pendigSoli = ref([]);
     const tableData = ref(["nombre", "apellido"]);
     const students = ref([]);
     const userPermise = ref([]);
     const row = ref([]);
+    const data = $q.localStorage.getItem('userData')
+    const token2 = data.token
 
     setInterval(() => {
       getStudents();
@@ -171,6 +174,11 @@ export default defineComponent({
           Estado: element.estado,
           Usado: element.usado,
         });
+        api.delete(`users/permises/${element.id}`,{
+          headers:{
+            'Authorization':`bearer ${token2}`
+          }
+        })
       });
 
       exportToExcel(userPermise.value,'Tabla-de-permisos')
