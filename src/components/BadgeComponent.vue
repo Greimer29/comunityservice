@@ -75,6 +75,9 @@ setup(){
   const eliminar = ref(false)
 
   function borrar(id){
+  console.log(id
+
+  )
     api.delete(`users/${id}`)
     .then(res=> {
       console.log(res.data)

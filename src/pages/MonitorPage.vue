@@ -162,8 +162,18 @@ export default defineComponent({
 
     const exportTable = async () => {
 
-      tableData.value.forEach((element) => {
-        userPermise.value.push({
+      userPermise.value = tableData.value.map(element => {
+        api.delete(`users/permises/${element.id}`,{
+          headers:{
+            'Authorization':`bearer ${token2}`
+          }
+        }).then(res => {
+          console.log(res)
+        }).catch(err=> {
+          console.log(err)
+        })
+
+        return{
           Estudiante: `${element.users.nombre} ${element.users.apellido}`,
           "Fecha de salida": element.fecha_salida,
           "Fecha de llegada": element.fecha_llegada,
@@ -173,13 +183,8 @@ export default defineComponent({
           Lugar: element.lugar,
           Estado: element.estado,
           Usado: element.usado,
-        });
-        api.delete(`users/permises/${element.id}`,{
-          headers:{
-            'Authorization':`bearer ${token2}`
-          }
-        })
-      });
+        }
+      })
 
       exportToExcel(userPermise.value,'Tabla-de-permisos')
     };
